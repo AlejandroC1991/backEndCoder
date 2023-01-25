@@ -1,0 +1,20 @@
+[
+	{
+		"id": 1,
+		"title": "Manzana",
+		"description": "Fruta ",
+		"price": 50,
+		"thumbnail": "BackEnd",
+		"code": "#2",
+		"stock": 10
+	},
+	{
+		"id": 2,
+		"title": "Manzana",
+		"description": "Fruta ",
+		"price": 50,
+		"thumbnail": "BackEnd",
+		"code": "#2",
+		"stock": 10
+	}
+]

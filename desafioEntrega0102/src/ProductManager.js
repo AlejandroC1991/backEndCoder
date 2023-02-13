@@ -16,12 +16,12 @@ export default class ProductManager {
             if (itemId) {
                 return itemId;
             } else {
-                return 'Not Found';
+                return 'ID NO ENCONTRADO';
             }
 
         } catch (error) {
-            console.log('error en la ruta')
-
+            console.log(error);
+            console.log('error en la ruta');
         }
 
     }
@@ -32,6 +32,7 @@ export default class ProductManager {
             return JSON.parse(traerProducto);
 
         } catch (error) {
+            console.log(error);
             console.log('error en la ruta');
         }
 
@@ -55,6 +56,7 @@ export default class ProductManager {
             return modificarArchivo;
 
         } catch (error) {
+            console.log(error);
             console.log('error en la ruta');
         }
 
@@ -77,6 +79,7 @@ export default class ProductManager {
             return productoEliminado;
 
         } catch (error) {
+            console.log(error);
             console.log('error en la ruta');
         }
 
@@ -101,6 +104,7 @@ export default class ProductManager {
             return arrayDeProductos;
 
         } catch (error) {
+            console.log(error);
             console.log('error en la ruta');
         }
 

@@ -1,3 +1,52 @@
 [
-
+	{
+		"title": "Reloj",
+		"description": "automatico",
+		"code": "codigo #1",
+		"price": 1000,
+		"status": true,
+		"stock": 10,
+		"category": "hombre",
+		"id": 2
+	},
+	{
+		"title": "Reloj",
+		"description": "automatico",
+		"code": "codigo #1",
+		"price": 1000,
+		"status": true,
+		"stock": 10,
+		"category": "hombre",
+		"id": 3
+	},
+	{
+		"title": "Reloj",
+		"description": "automatico",
+		"code": "codigo #1",
+		"price": 1000,
+		"status": true,
+		"stock": 10,
+		"category": "hombre",
+		"id": 4
+	},
+	{
+		"title": "Reloj",
+		"description": "automatico",
+		"code": "codigo #1",
+		"price": 1000,
+		"status": true,
+		"stock": 10,
+		"category": "hombre",
+		"id": 5
+	},
+	{
+		"title": "Reloj",
+		"description": "automatico",
+		"code": "codigo #1",
+		"price": 1000,
+		"status": true,
+		"stock": 10,
+		"category": "hombre",
+		"id": 6
+	}
 ]

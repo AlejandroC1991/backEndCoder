@@ -36,6 +36,7 @@ router.post('/', (req, res) => {
     productManager.addProduct(product);
     res.send({status: "success",message: "producto creado"});
     console.log(products);
+    
 });
 
 
@@ -70,4 +71,20 @@ router.delete('/:id',async (req, res) => {
         res.status(404).send({status: 'error', message: 'Producto no encontrado'});
     }
 });
+
+
+
+
+//ULTIMO EJERCICIO
+router.post('/', (req, res) => {
+    const product = req.body;
+    products.push(product);
+    res.send({status: "success"});
+});
+
+router.get('/', (req, res) => {
+    res.send({products});
+});
+
+//
 export default router;

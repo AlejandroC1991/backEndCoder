@@ -58,7 +58,7 @@ export default class ProductManager {
             console.log(error);
             console.log('error en la ruta');
         }
-
+        
     }
 
     deleteProduct = async (idABorrar) => {
@@ -117,7 +117,7 @@ export default class ProductManager {
 //     "stock": 10
 // }
 
-const manejadorEventos = new ProductManager('../files/productos.json');
+// const manejadorEventos = new ProductManager('../filasdes/asdasd.json');
 // console.log(await manejadorEventos.addProduct(producto));
 // console.log(await manejadorEventos.getProducts());
 // console.log(await manejadorEventos.updateProduct(2, "descripcion", "fruta color rojo"));

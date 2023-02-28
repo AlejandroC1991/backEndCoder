@@ -22,8 +22,8 @@ app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
 //Creamos la instancia de la clase
-const productManager = new ProductManager(path.join(__dirname, 'productos.json'));
-const cartManager = new CartManager(path.join(__dirname, 'carritos.json'));
+const productManager = new ProductManager(path.join(__dirname, '.src/routes/productos.json'));
+const cartManager = new CartManager(path.join(__dirname, '.src/routes/carritos.json'));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -44,7 +44,7 @@ const io = new Server(server);
 io.on('connection', async socket => {
     console.log('cliente conectado')
     
-    const data = await fs.promises.readFile('./src/routes/products.json', 'utf-8')
+    const data = await fs.promises.readFile('./src/routes/productos.json', 'utf-8')
     const products = JSON.parse(data)
     
     io.emit('showProducts', products)
@@ -57,7 +57,7 @@ io.on('connection', async socket => {
 
     socket.on('getForm', async data => {
 
-        const prods = await fs.promises.readFile('./src/routes/products.json', 'utf-8')
+        const prods = await fs.promises.readFile('./src/routes/productos.json', 'utf-8')
         const products = JSON.parse(prods)
 
         if (products.length === 0) {
@@ -74,7 +74,7 @@ io.on('connection', async socket => {
         if (codeIndex !== -1) return socket.emit('codeIndex', 'Code repited')
 
         products.push(data)
-        await fs.promises.writeFile('./src/routes/products.json', JSON.stringify(products, null, '\t'))
+        await fs.promises.writeFile('./src/routes/productos.json', JSON.stringify(products, null, '\t'))
 
         io.emit('showProducts', products)
 

@@ -12,9 +12,7 @@ import {
 } from 'socket.io';
 // import fs from 'fs';
 
-import {
-    productModel
-} from './src/dao/models/productsDB.js';
+import { productModel } from './src/dao/models/productsDB.js';
 import {
     cartModel
 } from './src/dao/models/cartsDB.js';
@@ -50,81 +48,82 @@ app.use('/realTimeProducts', viewsRouter);
 const environment = async () => {
     try {
         await mongoose.connect('mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority');
-        const response = await productModel.create({
-            "title": 'anteojo',
-            "price": 200
-        }, {
-            "title": 'reloj automatico',
-            "price": 1500
-        }, {
-            "title": 'cuchillo',
-            "price": 100
-        }, {
-            "title": 'cuchara',
-            "price": 30
-        }, {
-            "title": 'tenedor',
-            "price": 40
-        }, {
-            "title": 'vaso',
-            "price": 50
-        }, {
-            "title": 'copa',
-            "price": 60
-        }, {
-            "title": 'botella',
-            "price": 70
-        }, {
-            "title": 'mesa',
-            "price": 800
-        }, {
-            "title": 'silla',
-            "price": 200
-        }, {
-            "title": 'sillon',
-            "price": 900
-        }, {
-            "title": 'notebook',
-            "price": 2000
-        }, {
-            "title": 'celular',
-            "price": 1000
-        }, {
-            "title": 'plato',
-            "price": 20
-        }, {
-            "title": 'cocina',
-            "price": 2100
-        }, {
-            "title": 'horno',
-            "price": 2400
-        }, {
-            "title": 'microondas',
-            "price": 2300
-        }, {
-            "title": 'heladera',
-            "price": 3400
-        }, {
-            "title": 'mate',
-            "price": 20
-        }, {
-            "title": 'termo',
-            "price": 250
-        }, {
-            "title": 'bicicleta',
-            "price": 500
-        }, {
-            "title": 'cama',
-            "price": 150
-        }, {
-            "title": 'velador',
-            "price": 300
-        }, );
+        // const response = await productModel.create({
+        //     "title": 'anteojo',
+        //     "price": 200
+        // }, {
+        //     "title": 'reloj automatico',
+        //     "price": 1500
+        // }, {
+        //     "title": 'cuchillo',
+        //     "price": 100
+        // }, {
+        //     "title": 'cuchara',
+        //     "price": 30
+        // }, {
+        //     "title": 'tenedor',
+        //     "price": 40
+        // }, {
+        //     "title": 'vaso',
+        //     "price": 50
+        // }, {
+        //     "title": 'copa',
+        //     "price": 60
+        // }, {
+        //     "title": 'botella',
+        //     "price": 70
+        // }, {
+        //     "title": 'mesa',
+        //     "price": 800
+        // }, {
+        //     "title": 'silla',
+        //     "price": 200
+        // }, {
+        //     "title": 'sillon',
+        //     "price": 900
+        // }, {
+        //     "title": 'notebook',
+        //     "price": 2000
+        // }, {
+        //     "title": 'celular',
+        //     "price": 1000
+        // }, {
+        //     "title": 'plato',
+        //     "price": 20
+        // }, {
+        //     "title": 'cocina',
+        //     "price": 2100
+        // }, {
+        //     "title": 'horno',
+        //     "price": 2400
+        // }, {
+        //     "title": 'microondas',
+        //     "price": 2300
+        // }, {
+        //     "title": 'heladera',
+        //     "price": 3400
+        // }, {
+        //     "title": 'mate',
+        //     "price": 20
+        // }, {
+        //     "title": 'termo',
+        //     "price": 250
+        // }, {
+        //     "title": 'bicicleta',
+        //     "price": 500
+        // }, {
+        //     "title": 'cama',
+        //     "price": 150
+        // }, {
+        //     "title": 'velador',
+        //     "price": 300
+        // }, );
 
         // const response = await productModel.find({ title : 'cama' });
         // console.log(JSON.stringify(response, null, '\t'));
-
-
+        
+        const products = await productModel.paginate( {}, {limit: 5, page: 1 });
+        console.log(JSON.stringify(products, null, '\t'));
 
         res.send({
             status: 'success',
@@ -139,23 +138,20 @@ const environment = async () => {
             // nextLink: ,
 
         });
+
+
     } catch (error) {
-        res.status(500).send({
-            error
-        });
+        // res.status(500).send({ error });
     }
 };
-
 environment();
 
-app.get('/products', async (req, res) => {
-    const {
-        title
-    } = req.query;
 
-    const productFilter = await productModel.find({
-        title: title
-    });
+
+app.get('/products', async (req, res) => {
+    const { title } = req.query;
+
+    const productFilter = await productModel.find({title: title});
     console.log(JSON.stringify(productFilter, null, '\t'));
     res.send(productFilter);
 })

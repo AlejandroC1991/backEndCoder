@@ -1,4 +1,6 @@
-import {Router} from 'express';
+import {
+    Router
+} from 'express';
 import Products from '../../dao/dbManagers/productsDB.js';
 
 const products = new Products();
@@ -20,8 +22,25 @@ router.get('/', async (req, res) => {
     }
 });
 
-    router.post('/', async (req, res) => {
-        const {
+router.post('/', async (req, res) => {
+    const {
+        title,
+        description,
+        code,
+        price,
+        status,
+        stock,
+        category,
+        id
+    } = req.body;
+
+    if (!title || !description || !code || !price || !status || !stock || !category || !id) return res.status(400).send({
+        status: 'error',
+        error: 'Incomplete values'
+    });
+
+    try {
+        const result = await usersManager.save({
             title,
             description,
             code,
@@ -30,34 +49,17 @@ router.get('/', async (req, res) => {
             stock,
             category,
             id
-        } = req.body;
-
-        if (!title || !description || !code || !price || !status || !stock || !category || !id) return res.status(400).send({
-            status: 'error',
-            error: 'Incomplete values'
         });
 
-        try {
-            const result = await usersManager.save({
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                id
-            });
-
-            res.send({
-                result: 'success',
-                payload: result
-            });
-        } catch (error) {
-            res.status(500).send({
-                error
-            });
-        }
-    });
+        res.send({
+            result: 'success',
+            payload: result
+        });
+    } catch (error) {
+        res.status(500).send({
+            error
+        });
+    }
+});
 
 export default router;

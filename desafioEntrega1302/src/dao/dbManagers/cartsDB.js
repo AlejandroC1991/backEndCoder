@@ -1,4 +1,4 @@
-import { cartsModel } from '../models/cartsDB';
+import { cartModel } from '../models/cartsDB.js';
 
 export default class Carts {
     constructor() {
@@ -7,17 +7,17 @@ export default class Carts {
 
     
     getAll = async () => {
-        const carts = await cartsModel.find();
+        const carts = await cartModel.find();
         return carts.map(cart => cart.toObject());
     }
 
     save = async (cart) => {
-        const result = await cartsModel.create(cart);
+        const result = await cartModel.create(cart);
         return result;
     }
 
     update = async (id, cart) => {
-        const result = await cartsModel.updateOne({_id: id}, cart);
+        const result = await cartModel.updateOne({_id: id}, cart);
         return result;
     }
 }

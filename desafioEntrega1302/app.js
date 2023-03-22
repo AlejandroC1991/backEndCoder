@@ -6,7 +6,7 @@ import __dirname from './utils.js';
 import productsRouter from './src/routes/products.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import handlebars from "express-handlebars";
-import viewsRouter from './src/routes/views.router.js';
+// import viewsRouter from './src/routes/views.router.js';
 // import { Server } from 'socket.io';
 // import fs from 'fs';
 import { productModel } from './src/dao/models/productsDB.js';
@@ -17,13 +17,14 @@ import session from 'express-session';
 import FileStore from 'session-file-store';
 import MongoStore from 'connect-mongo';
 import sessionsRouter from './src/routes/sessions.routerDB.js';
+import viewsRouter from './src/routes/views.routerDB.js';
+
 
 
 const app = express();
 
 
 app.use(express.static(`${__dirname}/public`));
-
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
@@ -73,11 +74,12 @@ function auth(req, res, next) {
     return res.status(401).send('error de autorización');
 }
 
+
 app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority',
         mongoOptions: { useNewUrlParser: true },
-        ttl: 30
+        ttl: 3600
     }),
     secret: 'secretCoder',
     resave: true,
@@ -93,6 +95,8 @@ app.get('/session', (req, res) => {
         res.send(`Bienvenido`);
     }
 });
+
+
 
 app.get('/login', (req, res) => {
     const { username, password } = req.query;
@@ -225,7 +229,7 @@ app.get('/products', async (req, res) => {
     res.send(productFilter);
 })
 
-app.listen(3030, () => console.log('Server running'));
+// app.listen(3030, () => console.log('Server running'));
 
 
 

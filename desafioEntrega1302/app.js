@@ -66,14 +66,6 @@ app.use('/realTimeProducts', viewsRouter);
 
 const fileStorage = FileStore(session);
 
-function auth(req, res, next) {
-    if (req.session?.user === 'pepe' && req.session?.admin) {
-        return next();
-    }
-
-    return res.status(401).send('error de autorización');
-}
-
 
 app.use(session({
     store: MongoStore.create({
@@ -117,9 +109,7 @@ app.use(session({
 //     });
 // });
 
-// app.get('/privado', auth, (req, res) => {
-//     res.send('Estas logueado');
-// });
+
 
 app.listen(8080, () => console.log('Server running'));
 

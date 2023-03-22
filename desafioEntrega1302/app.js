@@ -7,17 +7,16 @@ import productsRouter from './src/routes/products.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import handlebars from "express-handlebars";
 import viewsRouter from './src/routes/views.router.js';
-import {
-    Server
-} from 'socket.io';
+// import { Server } from 'socket.io';
 // import fs from 'fs';
-
 import { productModel } from './src/dao/models/productsDB.js';
-import {
-    cartModel
-} from './src/dao/models/cartsDB.js';
+import { cartModel } from './src/dao/models/cartsDB.js';
 import mongoose from 'mongoose';
-
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import FileStore from 'session-file-store';
+import MongoStore from 'connect-mongo';
+import sessionsRouter from './src/routes/sessions.routerDB.js';
 
 
 const app = express();
@@ -33,16 +32,95 @@ app.set('view engine', 'handlebars');
 const productManager = new ProductManager(path.join(__dirname, '.src/routes/productos.json'));
 const cartManager = new CartManager(path.join(__dirname, '.src/routes/carritos.json'));
 app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
+app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({
+    secret: "secretCode",
+    resave: true,
+    saveUninitialized: true
 }));
+app.use('/api/sessions', sessionsRouter);
+
+
 
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 app.use('/realTimeProducts', viewsRouter);
 
+//COOKIES
+// app.get('/set-cookies', (req,res) => {
+//     res.cookie('CoderCookie', 'cookie poderosa', {maxAge: 30000}).send('Cookie succesfull');
+// });
 
+// app.get('/cookies', (req,res) => {
+//     res.send(req.cookies);
+// });
+
+// app.get('/delete-cookies', (req,res) => {
+//     res.clearCookie('CoderCookie').send('Cookie eliminada');
+// });
+
+// SESSION
+
+const fileStorage = FileStore(session);
+
+function auth(req, res, next) {
+    if (req.session?.user === 'pepe' && req.session?.admin) {
+        return next();
+    }
+
+    return res.status(401).send('error de autorización');
+}
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority',
+        mongoOptions: { useNewUrlParser: true },
+        ttl: 30
+    }),
+    secret: 'secretCoder',
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.get('/session', (req, res) => {
+    if (req.session.counter) {
+        req.session.counter++;
+        res.send(`Se ha vistio el sitio ${req.session.counter} veces`);
+    } else {
+        req.session.counter = 1;
+        res.send(`Bienvenido`);
+    }
+});
+
+app.get('/login', (req, res) => {
+    const { username, password } = req.query;
+
+    if (username !== 'pepe' || password !== 'pepepass') {
+        return res.send('login fallido');
+    }
+
+    req.session.user = username;
+    req.session.admin = true;
+    res.send('Login exitoso');
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (!err) res.send('Logout exitoso')
+        else res.send({ error: 'error', body: err });
+    });
+});
+
+app.get('/privado', auth, (req, res) => {
+    res.send('Estas logueado');
+});
+
+app.listen(8080, () => console.log('Server running'));
+
+
+//
 
 // CONECCION BASE DE DATOS MONGO DB
 const environment = async () => {
@@ -122,21 +200,12 @@ const environment = async () => {
         // const response = await productModel.find({ title : 'cama' });
         // console.log(JSON.stringify(response, null, '\t'));
         
-        const products = await productModel.paginate( {}, {limit: 5, page: 1 });
-        console.log(JSON.stringify(products, null, '\t'));
+        // const products = await productModel.paginate( {}, {limit: 5, page: 1 });
+        // console.log(JSON.stringify(products, null, '\t'));
 
         res.send({
             status: 'success',
             payload: products,
-            // totalPages: ,
-            // prevPage: ,
-            // nextPage: ,
-            // page: ,
-            // hasPrevPage: ,
-            // hasNextPage: ,
-            // prevLink: ,
-            // nextLink: ,
-
         });
 
 
@@ -156,7 +225,7 @@ app.get('/products', async (req, res) => {
     res.send(productFilter);
 })
 
-app.listen(3030);
+app.listen(3030, () => console.log('Server running'));
 
 
 

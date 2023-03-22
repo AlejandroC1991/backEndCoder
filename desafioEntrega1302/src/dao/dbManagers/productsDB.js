@@ -11,7 +11,7 @@ export default class Products {
         return products.map(product => product.toObject());
     }
 
-    save = async (usproductr) => {
+    save = async (product) => {
         const result = await productModel.create(product);
         return result;
     }

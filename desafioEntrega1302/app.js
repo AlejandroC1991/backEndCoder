@@ -40,10 +40,8 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
 app.use('/api/sessions', sessionsRouter);
-
-
-
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
@@ -64,7 +62,7 @@ app.use('/realTimeProducts', viewsRouter);
 
 // SESSION
 
-const fileStorage = FileStore(session);
+// const fileStorage = FileStore(session);
 
 
 app.use(session({
@@ -78,6 +76,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.listen(8080, () => console.log('Server running'));
 // app.get('/session', (req, res) => {
 //     if (req.session.counter) {
 //         req.session.counter++;
@@ -111,7 +110,7 @@ app.use(session({
 
 
 
-app.listen(8080, () => console.log('Server running'));
+
 
 
 //

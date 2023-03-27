@@ -1,6 +1,27 @@
 {
   "dependencies": {
     "express-handlebars": "^6.0.7",
+    "express-session": "^1.17.3",
+    "mongoose": "^7.0.1",
+    "mongoose-paginate-v2": "^1.7.1",
     "socket.io": "^4.6.0"
-  }
+  },
+  "name": "entregabackend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlejandroC1991/backEndCoder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlejandroC1991/backEndCoder/issues"
+  },
+  "homepage": "https://github.com/AlejandroC1991/backEndCoder#readme",
+  "description": ""
 }

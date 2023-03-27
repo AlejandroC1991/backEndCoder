@@ -1,0 +1,14 @@
+<div style="display: flex; justify-content:center;align-items:center;" >
+    {{#each products}}
+    <div style="width:max-content; margin-right:1rem; border: 1px solid black; padding:3px">
+    <p>{{this.title}}</p> <br>
+    <p>${{this.price}}</p>
+    </div>
+    {{/each}}
+    {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
+    {{/if}}
+</div>

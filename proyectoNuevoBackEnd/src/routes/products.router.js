@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import Products from '../dao/managers/productsManager.js';
+import userModel from '../dao/models/users.js';
 
 const productsManager = new Products();
 const router = Router();
 
 router.get('/', async (req, res) => {
+    
     try {
         const products = await productsManager.getAll();
         res.send({
@@ -15,6 +17,8 @@ router.get('/', async (req, res) => {
         res.status(500).send({error});
     }
 });
+
+
 
 router.post('/', async (req, res) => {
     const {title,description,code,price,status,stock,category} = req.body;

@@ -2,6 +2,9 @@ import { Router } from 'express';
 import Carts from '../dao/managers/cartsManager.js';
 import Products from '../dao/managers/productsManager.js';
 import { productModel } from '../dao/models/products.js';
+import { cartModel } from '../dao/models/carts.js';
+import userModel from '../dao/models/users.js';
+
 
 
 const productsManager = new Products();
@@ -21,21 +24,22 @@ router.get('/carts', async(req, res) => {
 });
 
 
-router.get('/products', async (req, res) => {
-    const { page = 1 } = req.query;
-    const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productModel.paginate({}, { limit: 5, page, lean: true });
 
-    const products = docs;
+router.get('/products', async (req, res) => {
+    const { page = 1   } = req.query;
+    const { docs : products, hasPrevPage, hasNextPage, nextPage, prevPage } = await productModel.paginate({}, { limit: 5, page, lean: true });
+    const { first_name, email } = req.session.user;
+    const user = {first_name, email}
 
     res.render('products', {
         products,
         hasPrevPage,
         hasNextPage,
         nextPage,
-        prevPage
+        prevPage,
+        user
     })
 });
-
 
 const publicAccess = (req, res, next) => {
     if (req.session.user) return res.redirect('/');
@@ -47,12 +51,23 @@ const privateAccess = (req, res, next) => {
     next();
 }
 
+
 router.get('/register', publicAccess, (req, res) => {
     res.render('register');
 });
 
-router.get('/login', publicAccess, (req, res) => {
+
+router.get('/realTimeProducts', (req, res) => {
+    res.render('realTimeProducts');
+});
+
+router.get('/login', (req, res) => {
     res.render('login');
+});
+
+
+router.get('/reset', publicAccess, (req, res) => {
+    res.render('reset');
 });
 
 router.get('/', privateAccess, (req, res) => {

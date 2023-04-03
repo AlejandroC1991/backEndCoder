@@ -4,7 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const productCollections = 'products';
 
-const productsSchema = new mongoose.Schema({
+export const productsSchema = new mongoose.Schema({
     title : String,
     description : String,
     code : String,

@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { productsSchema } from './products.js';
 
 const cartCollections = 'carts';
+
 
 const cartsSchema = new mongoose.Schema({
   
@@ -9,10 +11,7 @@ const cartsSchema = new mongoose.Schema({
         required: true
    
     },
-    products: {
-        type: Array,
-        default: []
-    }
+    products: [productsSchema],
 
 });
 

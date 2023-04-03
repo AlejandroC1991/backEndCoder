@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import userModel from '../dao/models/users.js';
+import { createHash, isValidPassword } from '../../utils.js'
+import passport from 'passport';
 
 const router = Router();
 
@@ -15,7 +17,7 @@ router.post('/register', async (req, res) => {
             last_name,
             email,
             age,
-            password
+            password: createHash(password)
         };
 
         await userModel.create(user);
@@ -30,15 +32,19 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    try {
-        const user = await userModel.findOne({ email, password });
-        if (!user) return res.status(400).send({ status: 'error', error: 'incorrect credentials' });
+    if (!email || !password) return res.status(400)
+        .send({ status: 'error', message: 'Incomplete values' });
 
-        req.session.user = {
-            name: `${user.first_name} ${user.last_name}`,
-            email: user.email,
-            age: user.age
-        }
+    try {
+        const user = await userModel.findOne({ email });
+
+        if (!user) return res.status(404).send({ status: 'error', message: 'User not found' });
+
+        if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', message: 'Invalid credentials' });
+
+        delete user.password;
+
+        req.session.user = user;
 
         res.send({ status: 'success', message: 'login success' });
 
@@ -47,23 +53,44 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/reset', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) return res.status(400)
+        .send({ status: 'error', message: 'Incomplete values' });
+
+    try {
+        const user = await userModel.findOne({ email });
+
+        if (!user) return res.status(404).send({ status: 'error', message: 'User not found' });
+
+        user.password = createHash(password);
+
+        await userModel.updateOne({ email }, user);
+
+        res.send({ status: 'success', message: 'reset success' });
+
+    } catch (error) {
+        res.status(500).send({ status: 'error', error });
+    }
+});
+
+
+router.get('/github',
+    passport.authenticate('github', { scope: ['user:email'] }),
+    async (req, res) => {
+        res.send({ status: 'sucess', message: 'user registered' });
+    });
+
+router.get('/github-callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/products');
+})
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) return res.status(500).send({ status: 'error', error: 'couldnt logout' });
         res.redirect('/');
     })
-});
-
-function auth(req, res, next) {
-    if (req.session?.user === 'pepe' && req.session?.admin) {
-        return next();
-    }
-
-    return res.status(401).send('error de autorización');
-}
-
-router.get('/privado', auth, (req, res) => {
-    res.send('Estas logueado');
 });
 
 export default router;

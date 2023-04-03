@@ -1,8 +1,19 @@
-<div style="display: flex; justify-content:center;align-items:center;" >
+<div style="display: flex; justify-content:center;align-items:center;">
+    <div>
+        <div>BIENVENIDO </div>
+         
+        <div style="width:max-content; margin-right:1rem; border: 1px solid black; padding:3px">
+            <p>{{user.first_name}}</p> <br>
+            <p>{{user.email}}</p> <br>
+            
+             
+        </div>
+        
+    </div>
     {{#each products}}
     <div style="width:max-content; margin-right:1rem; border: 1px solid black; padding:3px">
-    <p>{{this.title}}</p> <br>
-    <p>${{this.price}}</p>
+        <p>{{this.title}}</p> <br>
+        <p>${{this.price}}</p>
     </div>
     {{/each}}
     {{#if hasPrevPage}}

@@ -9,6 +9,10 @@ import productsRouter from './src/routes/products.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import sessionsRouter from './src/routes/sessions.router.js';
 import viewsRouter from './src/routes/view.router.js';
+import initializePassport from './src/config/passport.config.js';
+import passport from 'passport';
+
+
 
 const app = express();
 
@@ -29,8 +33,12 @@ app.use('/api/sessions', sessionsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
-app.use('/realTimeProducts', viewsRouter);
 
+
+// PASSPORT
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use(session({

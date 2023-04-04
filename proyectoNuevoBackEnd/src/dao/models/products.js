@@ -7,7 +7,7 @@ const productCollections = 'products';
 export const productsSchema = new mongoose.Schema({
     title : String,
     description : String,
-    code : String,
+    code : Number,
     price : Number,
     status : Boolean,
     stock : Number,

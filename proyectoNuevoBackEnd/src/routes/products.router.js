@@ -17,8 +17,39 @@ router.get('/', async (req, res) => {
         res.status(500).send({error});
     }
 });
+router.get('/:code', async (req, res) => {
+    
+    try {
+        const code = Number(req.params.code);
+        const productsByCode = await productsManager.getProductByCode(code);
+        
+        
+        res.send({
+            status: 'success',
+            payload: productsByCode
+        });
+    } catch (error) {
+        res.status(500).send({message:"hay un error"});
+    }
+});
 
+router.delete('/:code',async (req, res) => {
+    try {
+    const productCode = Number(req.params.code);
+    
 
+    const productoBorrado = await productsManager.deleteProduct(productCode);
+
+   
+    res.send({
+        status: 'success',
+        message: 'Producto eliminado correctamente',
+        payload: productoBorrado
+    });
+    } catch (error) {
+        res.status(404).send({status: 'error', message: 'Producto no encontrado'});
+    }
+});
 
 router.post('/', async (req, res) => {
     const {title,description,code,price,status,stock,category} = req.body;

@@ -15,4 +15,24 @@ export default class Products {
         const result = await productModel.create(product);
         return result;
     }
+
+    getProductByCode = async (codigoPasado) => {
+        const productByCode = await productModel.findOne({code:codigoPasado });
+
+        return productByCode;
+
+    }
+
+    deleteProduct = async (codeABorrar) => {
+        try {
+            const traerProducto = await productModel.deleteOne({code:codeABorrar });
+            return traerProducto;
+        
+        } catch (error) {
+            console.log(error);
+            console.log('error en la ruta');
+        }
+
+    }
+
 }

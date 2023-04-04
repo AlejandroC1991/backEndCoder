@@ -31,4 +31,37 @@ router.post('/', async(req, res) => {
     }
 });
 
+
+router.get('/:idCarrito', async (req, res) => {
+    
+    try {
+        const idCarrito = Number(req.params.idCarrito);
+        const cartByID = await cartsManager.getCartByID(idCarrito);
+        
+        
+        res.send({
+            status: 'success',
+            payload: cartByID
+        });
+    } catch (error) {
+        res.status(500).send({message:"hay un error"});
+    }
+});
+
+router.delete('/:idCarrito',async (req, res) => {
+    try {
+    const cartID = Number(req.params.idCarrito);
+    const cartBorrado = await cartsManager.deleteProduct(cartID);
+
+   
+    res.send({
+        status: 'success',
+        message: 'Carrito eliminado correctamente',
+        payload: cartBorrado
+    });
+    } catch (error) {
+        res.status(404).send({status: 'error', message: 'Producto no encontrado'});
+    }
+});
+
 export default router;

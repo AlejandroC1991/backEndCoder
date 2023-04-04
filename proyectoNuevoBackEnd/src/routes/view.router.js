@@ -28,6 +28,8 @@ router.get('/carts', async(req, res) => {
 router.get('/products', async (req, res) => {
     const { page = 1   } = req.query;
     const { docs : products, hasPrevPage, hasNextPage, nextPage, prevPage } = await productModel.paginate({}, { limit: 5, page, lean: true });
+
+
     const { first_name, email } = req.session.user;
     const user = {first_name, email}
 
@@ -40,6 +42,28 @@ router.get('/products', async (req, res) => {
         user
     })
 });
+
+router.get('/products/:code', async (req, res) => {
+    const CODIGO = Number(req.params.code);
+    const productsByCode = await productsManager.getProductByCode(CODIGO);
+
+    const producto = {title:productsByCode.title, code:productsByCode.code,price:productsByCode.price, stock:productsByCode.stock}
+    res.render('productsByCode', {
+        producto
+    });
+});
+
+router.get('/carts/:idCarrito', async (req, res) => {
+    const ID = Number(req.params.idCarrito);
+    const cartsByID = await cartsManager.getCartByID(ID);
+
+    const cart = {idCarrito:cartsByID.idCarrito, products:cartsByID.products}
+    res.render('cartsByID', {
+        cart
+    });
+});
+
+
 
 const publicAccess = (req, res, next) => {
     if (req.session.user) return res.redirect('/');

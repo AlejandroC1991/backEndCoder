@@ -37,15 +37,16 @@ router.post('/login', async (req, res) => {
 
     try {
         const user = await userModel.findOne({ email });
+        
 
         if (!user) return res.status(404).send({ status: 'error', message: 'User not found' });
 
         if (!isValidPassword(user, password)) return res.status(401).send({ status: 'error', message: 'Invalid credentials' });
 
         delete user.password;
-
+        
         req.session.user = user;
-
+        
         res.send({ status: 'success', message: 'login success' });
 
     } catch (error) {

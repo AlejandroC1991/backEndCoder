@@ -22,8 +22,8 @@ router.get('/:code', async (req, res) => {
     try {
         const code = Number(req.params.code);
         const productsByCode = await productsManager.getProductByCode(code);
-        
-        
+        if (!productsByCode) return res.send({message:"NO EXISTE ESE PRODUCTO"});
+       
         res.send({
             status: 'success',
             payload: productsByCode

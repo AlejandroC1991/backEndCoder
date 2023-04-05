@@ -13,31 +13,12 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.post('/', async(req, res) => {
-    const { idCarrito, products } = req.body;
-
-    if(!idCarrito || !products) return res.status(400).send({ status: 'error', error: 'Incomplete values' });
-
-    try {
-        const result = await cartsManager.save({
-            idCarrito,
-            products : [],
-            
-        });
-
-        res.send({ result: 'success', payload: result });
-    } catch (error) {
-        res.status(500).send({ error });
-    }
-});
-
-
 router.get('/:idCarrito', async (req, res) => {
     
     try {
         const idCarrito = Number(req.params.idCarrito);
         const cartByID = await cartsManager.getCartByID(idCarrito);
-        
+        if (!cartByID) return res.send({message:"NO EXISTE EL CARRITO"});
         
         res.send({
             status: 'success',
@@ -63,5 +44,29 @@ router.delete('/:idCarrito',async (req, res) => {
         res.status(404).send({status: 'error', message: 'Producto no encontrado'});
     }
 });
+
+
+router.post('/', async(req, res) => {
+    const { idCarrito, products } = req.body;
+
+    if(!idCarrito || !products) return res.status(400).send({ status: 'error', error: 'Incomplete values' });
+
+    try {
+        const result = await cartsManager.save({
+            idCarrito,
+            products : [],
+            
+        });
+
+        res.send({ result: 'success', payload: result });
+    } catch (error) {
+        res.status(500).send({ error });
+    }
+});
+
+
+
+
+
 
 export default router;

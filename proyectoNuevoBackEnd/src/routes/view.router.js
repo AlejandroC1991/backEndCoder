@@ -65,19 +65,7 @@ router.get('/carts/:idCarrito', async (req, res) => {
 });
 
 
-
-const publicAccess = (req, res, next) => {
-    if (req.session.user) return res.redirect('/');
-    next();
-}
-
-const privateAccess = (req, res, next) => {
-    if (!req.session.user) return res.redirect('/login');
-    next();
-}
-
-
-router.get('/register', publicAccess, (req, res) => {
+router.get('/register',  (req, res) => {
     res.render('register');
 });
 
@@ -91,11 +79,11 @@ router.get('/login', (req, res) => {
 });
 
 
-router.get('/reset', publicAccess, (req, res) => {
+router.get('/reset', (req, res) => {
     res.render('reset');
 });
 
-router.get('/', privateAccess, (req, res) => {
+router.get('/', (req, res) => {
     res.render('profile', {
         user: req.session.user
     });

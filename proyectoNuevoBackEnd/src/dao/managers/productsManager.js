@@ -19,7 +19,7 @@ export default class Products {
     getProductByCode = async (codigoPasado) => {
         const productByCode = await productModel.findOne({code:codigoPasado });
 
-        return productByCode;
+        return productByCode.toObject();
 
     }
 
@@ -29,10 +29,14 @@ export default class Products {
             return traerProducto;
         
         } catch (error) {
-            console.log(error);
-            console.log('error en la ruta');
+            console.log(error + 'error en la ruta');
         }
 
+    }
+
+    updateByCode = async (codigoPasado, product) => {
+        const result = await productModel.updateOne({code: codigoPasado}, product );
+        return result;
     }
 
 }

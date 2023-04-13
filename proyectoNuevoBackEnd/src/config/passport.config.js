@@ -9,9 +9,11 @@ const initializePassport = () => {
         clientID: 'Iv1.199f2494f3260cd3',
         clientSecret: '9a3ce0a68593fc8e820290cfa34a2c6c046f3f6e',
         callbackURL: 'http://localhost:8080/api/sessions/github-callback'
-    }, async(accessToken, refreshToken, profile, done) => {
+    }, async (accessToken, refreshToken, profile, done) => {
         try {
-            const user = await userModel.findOne({ email: profile._json.email });
+            const user = await userModel.findOne({
+                email: profile._json.email
+            });
             if (!user) {
                 const newUser = {
                     first_name: profile._json.name,
@@ -43,7 +45,3 @@ const initializePassport = () => {
 };
 
 export default initializePassport;
-
-
-
-

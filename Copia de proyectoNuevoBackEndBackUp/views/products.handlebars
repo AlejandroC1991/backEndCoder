@@ -1,0 +1,28 @@
+<div style="display: inline-block; justify-content:center;align-items:center;">
+    <div >
+        <div>BIENVENIDO {{user.first_name}} {{user.last_name}}</div>
+         
+        <div style="width:max-content; margin-right:1rem;  ">
+            
+            <p>Email: {{user.email}}</p> <br>
+            
+             
+        </div>
+        
+    </div> 
+
+    {{#each products}}
+    <div style="display: flex; justify-content:center;align-items:center; width:10rem; margin-right:1rem; border: 1px solid black; padding:3px; margin-bottom:1rem">
+        <p>Producto {{this.title}}</p> <br>
+        <p>Precio ${{this.price}}</p>
+    </div>
+    {{/each}}
+    {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
+    {{/if}}
+    <a href="/api/sessions/logout"><button>Salir</button></a>
+    <a href="/"><button>Profile</button></a>
+</div>

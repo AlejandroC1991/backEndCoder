@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import Carts from '../dao/managers/cartsManager.js';
-import Products from '../dao/managers/productsManager.js';
-import { productModel } from '../dao/models/products.js';
-import { cartModel } from '../dao/models/carts.js';
-import userModel from '../dao/models/users.js';
+import Carts from '../dao/DBmanagers/cartsManager.js';
+import Products from '../dao/DBmanagers/productsManager.js';
+import { productModel } from '../dao/DBmanagers/models/products.js';
+
 
 
 

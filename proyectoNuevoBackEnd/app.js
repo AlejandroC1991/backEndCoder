@@ -5,13 +5,14 @@ import MongoStore from 'connect-mongo';
 import mongoose from "mongoose";
 import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
-import productsRouter from './src/routes/products.router.js';
-import cartsRouter from './src/routes/carts.router.js';
 import sessionsRouter from './src/routes/sessions.router.js';
 import viewsRouter from './src/routes/view.router.js';
 import initializePassport from './src/config/passport.config.js';
 import passport from 'passport';
-import dictionaryRouter from "./src/routes/dictionary.router.js";
+import './src/dao/dbConfig.js';
+import usersRouter from './src/routes/users.router.js';
+import cartsRouter from './src/routes/carts.router.js';
+import productsRouter from './src/routes/products.router.js';
 
 
 const app = express();
@@ -32,7 +33,7 @@ app.use(session({
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/api/dictionary', dictionaryRouter);
+app.use('/api/users', usersRouter);
 app.use('/', viewsRouter); 
 
 // PASSPORT

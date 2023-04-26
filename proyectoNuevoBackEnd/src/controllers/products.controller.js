@@ -28,18 +28,21 @@ const save = async (req, res) => {
 const getProductByCode = async (req, res) => {
     try {
         const code = Number(req.params.code);
+        
         const productsByCode = await getProductByCodeProductService(code);
+        console.log(productsByCode)
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
-
-        res.send({
+console.log("asdasdasdasdasdasd")
+        res.json({
+            
             status: 'success',
             payload: productsByCode
         });
     } catch (error) {
         res.status(500).send({
-            message: "hay un error"
+            message: ("hay un error")
         });
     }
 }

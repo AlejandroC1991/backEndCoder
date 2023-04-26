@@ -17,15 +17,15 @@ export default class Products {
     }
 
     getProductByCode = async (codigoPasado) => {
-        const productByCode = await productModel.findOne({code:codigoPasado });
-
-        return productByCode.toObject();
+        const productByCode = await productModel.findOne(codigoPasado);
+        return productByCode;
 
     }
 
     deleteProduct = async (codeABorrar) => {
         try {
-            const traerProducto = await productModel.deleteOne({code:codeABorrar });
+            
+            const traerProducto = await productModel.deleteOne(codeABorrar);
             return traerProducto;
         
         } catch (error) {

@@ -5,9 +5,9 @@ import { save, getAll,getProductByCode ,deleteProduct ,updateByCode} from '../co
 const router = Router();
 
 router.get('/', getAll);
-router.get('/', getProductByCode);
+router.get('/:code', getProductByCode);
 router.post('/', save);
-router.delete('/', deleteProduct);
+router.delete('/:code', deleteProduct);
 router.put('/', updateByCode);
 
 export default router;

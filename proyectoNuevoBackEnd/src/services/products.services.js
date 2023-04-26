@@ -13,6 +13,7 @@ const getAll = async () => {
 
 const getProductByCode = async (codigoPasado) => {
     const productByCode = await PRODUCTSDAO.getProductByCode({code:codigoPasado });
+    console.log("asdasdasdasdasdasdas")
     return productByCode;
 
 }

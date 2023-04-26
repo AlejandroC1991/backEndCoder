@@ -34,7 +34,6 @@ const getProductByCode = async (req, res) => {
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
-console.log("asdasdasdasdasdasd")
         res.json({
             
             status: 'success',

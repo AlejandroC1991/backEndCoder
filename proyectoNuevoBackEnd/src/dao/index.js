@@ -18,6 +18,37 @@ const MongoUsersDao = new mongoUsersDao();
 
 console.log(config.persistence)
 
-export const PRODUCTSDAO = config.persistence === 'MEMORY' ? MemoryProductsDao : MongoProductsDao;
-export const CARTSDAO = config.persistence === 'MEMORY' ? MemoryCartsDao : MongoCartsDao;
-export const USERSDAO = config.persistence === 'MEMORY' ? MemoryUsersDao : MongoUsersDao;
+export let PRODUCTSDAO; 
+
+if (config.persistence=== 'MEMORY') {
+     MemoryProductsDao;
+} else if (config.persistence=== 'MONGO') {
+     MongoProductsDao;
+
+} else {
+   console.log("no definio ninguna persistencia valida")
+};
+
+
+export let CARTSDAO;
+ 
+ if (config.persistence=== 'MEMORY') {
+    MemoryCartsDao;
+} else if (config.persistence=== 'MONGO') {
+    MongoCartsDao;
+
+} else {
+  console.log("no definio ninguna persistencia valida")
+}
+
+
+export let USERSDAO;
+ 
+ if (config.persistence=== 'MEMORY') {
+    MemoryUsersDao;
+} else if (config.persistence=== 'MONGO') {
+    MongoUsersDao;
+
+} else {
+  console.log("no definio ninguna persistencia valida")
+}

@@ -13,6 +13,8 @@ import './src/dao/dbConfig.js';
 import usersRouter from './src/routes/users.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import productsRouter from './src/routes/products.router.js';
+import nodemailer from 'nodemailer';
+import twilio from 'twilio';
 
 
 const app = express();
@@ -62,6 +64,82 @@ app.use(session({
         console.error('error');
     }
 })();
+
+
+//EMAIL NODEMAILER
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'alejandro.celiberto@gmail.com',
+        pass: 'jhygjjtotgxhzlbm'
+    }
+});
+
+app.get('/mail', async(req, res) => {
+    await transporter.sendMail({
+        from: 'alejandro.celiberto@gmail.com',
+        to: 'alejandro.celiberto@findholding.com',
+        subject: 'CORREO DE PRUEBA',
+        html: `<div><h1>Hola, esto es una prueba de envio de correo con una imagen adjunta</h1>
+        <img src="cid:find"/></div>`,
+        attachments: [
+            {
+                filename: 'find.png',
+                path: `${__dirname}/find.png`,
+                cid: 'find'
+            }
+        ]
+    });
+
+    res.send('Correo enviado existosamente');
+});
+
+//SMS TWILIO
+
+const TWILIO_ACCOUNT_SID = 'AC0477a618bec597d3c27cbc5ff1e181a9';
+const TWILIO_AUTH_TOKEN = '7f02dee778f1c33237cdee7fad496825';
+const TWILIO_PHONE_NUMBER = '+13204338456';
+
+const client = twilio(
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
+    TWILIO_PHONE_NUMBER
+);
+
+app.get('/sms', async (req, res) => {
+    await client.messages.create({
+        from: TWILIO_PHONE_NUMBER,
+        to: '+541122563087',
+        body: "MENSAJE DE PRUEBA"
+    });
+
+    res.send('SMS sent');
+});
+
+app.get('/custom-sms', async (req, res) => {
+    const { name, product } = req.query;
+    await client.messages.create({
+        from: TWILIO_PHONE_NUMBER,
+        to: '+541122563087',
+        body: `Hola ${name} gracias por tu compra. Tu producto es ${product}`
+    });
+
+    res.send('SMS sent');
+});
+
+app.get('/whatsapp', async(req, res) => {
+    let { name, product } = req.query;
+    await client.messages.create({
+        from: 'whatsapp:+14155238886',
+        to: 'whatsapp:+5491122563087',
+        body: `Hola ${name} gracias por tu compra. Tu producto es ${product}`
+        
+    });
+    console.log("el mensaje se envio");
+
+    res.send('Whatsapp sent');
+})
 
 
 app.listen(8080, () => console.log('Server running'));

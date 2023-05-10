@@ -11,27 +11,26 @@ export default class Carts {
     }
 
     save = async (cart) => {
-        const result = await cartModel.create(cart);
-        return result;
+        return await cartModel.create(cart);
     }
 
     update = async (id, cart) => {
-        const result = await cartModel.updateOne({_id: id}, cart);
-        return result;
+        return await cartModel.updateOne({_id: id}, cart);
     }
 
     getCartByID = async (IDPasado) => {
-        const cartByID = await cartModel.findOne({idCarrito:IDPasado });
-
-        return cartByID.toObject();
+     
+        try {
+            return await cartModel.findOne(IDPasado);
+        } catch (error) {
+            console.log(error + 'error en la ruta carts manager mongoDB');
+        }
 
     }
 
-    deleteProduct = async (IDABorrar) => {
+    deleteCart = async (IDABorrar) => {
         try {
-            const traerCarrito = await cartModel.deleteOne({idCarrito:IDABorrar });
-            return traerCarrito;
-        
+            return await cartModel.deleteOne(IDABorrar);
         } catch (error) {
             console.log(error + 'error en la ruta');
         }

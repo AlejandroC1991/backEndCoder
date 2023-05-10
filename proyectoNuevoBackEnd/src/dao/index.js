@@ -13,11 +13,13 @@ import config from '../config/config.js';
 export let PRODUCTSDAO,CARTSDAO, USERSDAO, TICKETSDAO; 
 
 if (config.persistence=== 'MEMORY') {
+
   PRODUCTSDAO = new memoryProductsDao();
   CARTSDAO = new memoryCartsDao();
   USERSDAO = new memoryUsersDao();
   TICKETSDAO = new memoryTicketsDao();
 } else if (config.persistence=== 'MONGO') {
+  
   PRODUCTSDAO = new mongoProductsDao();
   CARTSDAO = new mongoCartsDao();
   USERSDAO = new mongoUsersDao();
@@ -25,5 +27,4 @@ if (config.persistence=== 'MEMORY') {
 } else {
    console.log("no definio ninguna persistencia valida")
 };
-
 

@@ -1,26 +1,26 @@
 import { CARTSDAO } from "../dao/index.js";
 
-const save = async(user) => {
-    await CARTSDAO.save(user);
-    return user;
+const save = async(cart) => {
+    await CARTSDAO.save(cart);
+    return cart;
 }
 
 const getAll = async () => {
-    const users = await CARTSDAO.getAll();
-    return users;
+    const carts = await CARTSDAO.getAll();
+    return carts;
 }
 
 
-const getProductByCode = async (codigoPasado) => {
-    const productByCode = await CARTSDAO.getProductByCode({code:codigoPasado });
-    return productByCode;
+// const getProductByCode = async (codigoPasado) => {
+//     const productByCode = await CARTSDAO.getProductByCode({code:codigoPasado });
+//     return productByCode;
 
-}
+// }
 
-const deleteProduct = async (codeABorrar) => {
+const deleteCart = async (IDPasado) => {
     try {
-        const traerCart = await CARTSDAO.deleteProduct({code:codeABorrar });
-        return traerCart;
+        const deleteCart = await CARTSDAO.deleteCart({idCarrito:IDPasado });
+        return deleteCart;
     
     } catch (error) {
         console.log(error + 'error en la ruta');
@@ -35,16 +35,15 @@ const update = async (id, cart) => {
 
 const getCartByID = async (IDPasado) => {
     const cartByID = await CARTSDAO.getCartByID({idCarrito:IDPasado });
-
-    return cartByID.toObject();
+    return cartByID;
 
 }
 
 export {
     save,
     getAll,
-    getProductByCode,
-    deleteProduct,
+    // getProductByCode,
+    deleteCart,
     update,
     getCartByID
 }

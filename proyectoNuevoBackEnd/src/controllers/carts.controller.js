@@ -1,10 +1,10 @@
 import {
     save as saveCartService,
     getAll as getAllCartService,
-    getProductByCode as getProductByCodeCartService,
-    deleteProduct as deleteProductCartService,
+    getCartByID as getCartByIDCartService,
+    deleteCart as deleteCartService,
    
-} from '../services/products.services.js'
+} from '../services/carts.services.js'
 
 const getAll = async (req, res) => {
     try {
@@ -33,10 +33,10 @@ const save = async (req, res) => {
     }
 }
 
-const getProductByCode = async (req, res) => {
+const getCartByID = async (req, res) => {
     try {
         const idCarrito = Number(req.params.idCarrito);
-        const cartByID = await getProductByCodeCartService(idCarrito);
+        const cartByID = await getCartByIDCartService(idCarrito);
         if (!cartByID) return res.send({message:"NO EXISTE EL CARRITO"});
         
         res.send({
@@ -44,14 +44,14 @@ const getProductByCode = async (req, res) => {
             payload: cartByID
         });
     } catch (error) {
-        res.status(500).send({message:"hay un error"});
+        res.status(500).send({message:"hay un error en carts"});
     }
 }
 
-const deleteProduct = async (req, res) => {
+const deleteCart = async (req, res) => {
     try {
         const cartID = Number(req.params.idCarrito);
-        const cartBorrado = await deleteProductCartService(cartID);
+        const cartBorrado = await deleteCartService(cartID);
     
        
         res.send({
@@ -70,7 +70,6 @@ const deleteProduct = async (req, res) => {
 export {
     save,
     getAll,
-    getProductByCode,
-    deleteProduct,
-    
+    getCartByID,
+    deleteCart,
 }

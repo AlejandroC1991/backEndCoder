@@ -1,13 +1,13 @@
 import  {PRODUCTSDAO}  from "../dao/index.js";
 
-const save = async(user) => {
-    await PRODUCTSDAO.save(user);
-    return user;
+const save = async(product) => {
+    await PRODUCTSDAO.save(product);
+    return product;
 }
 
 const getAll = async () => {
-    const users = await PRODUCTSDAO.getAll();
-    return users;
+    const products = await PRODUCTSDAO.getAll();
+    return products;
 }
 
 

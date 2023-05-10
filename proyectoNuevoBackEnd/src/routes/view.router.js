@@ -76,13 +76,16 @@ router.get('/realTimeProducts', (req, res) => {
 router.get('/login', (req, res) => {
     res.render('login');
 });
+router.get('/', (req, res) => {
+    res.render('login');
+});
 
 
 router.get('/reset', (req, res) => {
     res.render('reset');
 });
 
-router.get('/', (req, res) => {
+router.get('/profile', (req, res) => {
     res.render('profile', {
         user: req.session.user
     });

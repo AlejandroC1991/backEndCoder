@@ -1,4 +1,4 @@
-import { PRODUCTSDAO } from "../dao/index.js";
+import  {PRODUCTSDAO}  from "../dao/index.js";
 
 const save = async(user) => {
     await PRODUCTSDAO.save(user);
@@ -13,7 +13,6 @@ const getAll = async () => {
 
 const getProductByCode = async (codigoPasado) => {
     const productByCode = await PRODUCTSDAO.getProductByCode({code:codigoPasado });
-    console.log("asdasdasdasdasdasdas")
     return productByCode;
 
 }

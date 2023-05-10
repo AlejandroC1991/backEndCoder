@@ -28,9 +28,9 @@ const save = async (req, res) => {
 const getProductByCode = async (req, res) => {
     try {
         const code = Number(req.params.code);
-        
+        console.log(code + "asd");
         const productsByCode = await getProductByCodeProductService(code);
-        console.log(productsByCode)
+        console.log("asdasdasd")
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
@@ -41,7 +41,7 @@ const getProductByCode = async (req, res) => {
         });
     } catch (error) {
         res.status(500).send({
-            message: ("hay un error")
+            message: ("hay un error HOLA")
         });
     }
 }

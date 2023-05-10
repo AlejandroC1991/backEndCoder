@@ -10,60 +10,20 @@ import mongoTicketsDao from './DBmanagers/ticketsManager.js';
 
 import config from '../config/config.js';
 
-const MemoryCartsDao = new memoryCartsDao();
-const MemoryUsersDao = new memoryUsersDao();
-const MemoryProductsDao = new memoryProductsDao();
-const MemoryTicketsDao = new memoryTicketsDao();
-
-const MongoCartsDao = new mongoCartsDao();
-const MongoProductsDao = new mongoProductsDao();
-const MongoUsersDao = new mongoUsersDao();
-const MongoTicketsDao = new mongoTicketsDao();
-
-console.log(config.persistence)
-
-export let PRODUCTSDAO; 
+export let PRODUCTSDAO,CARTSDAO, USERSDAO, TICKETSDAO; 
 
 if (config.persistence=== 'MEMORY') {
-     MemoryProductsDao;
+  PRODUCTSDAO = new memoryProductsDao();
+  CARTSDAO = new memoryCartsDao();
+  USERSDAO = new memoryUsersDao();
+  TICKETSDAO = new memoryTicketsDao();
 } else if (config.persistence=== 'MONGO') {
-     MongoProductsDao;
-
+  PRODUCTSDAO = new mongoProductsDao();
+  CARTSDAO = new mongoCartsDao();
+  USERSDAO = new mongoUsersDao();
+  TICKETSDAO = new mongoTicketsDao();
 } else {
    console.log("no definio ninguna persistencia valida")
 };
 
 
-export let CARTSDAO;
- 
- if (config.persistence=== 'MEMORY') {
-    MemoryCartsDao;
-} else if (config.persistence=== 'MONGO') {
-    MongoCartsDao;
-
-} else {
-  console.log("no definio ninguna persistencia valida")
-}
-
-
-export let USERSDAO;
- 
- if (config.persistence=== 'MEMORY') {
-    MemoryUsersDao;
-} else if (config.persistence=== 'MONGO') {
-    MongoUsersDao;
-
-} else {
-  console.log("no definio ninguna persistencia valida")
-}
-
-export let TICKETSDAO;
- 
- if (config.persistence=== 'MEMORY') {
-    MemoryTicketsDao;
-} else if (config.persistence=== 'MONGO') {
-    MongoTicketsDao;
-
-} else {
-  console.log("no definio ninguna persistencia valida")
-}

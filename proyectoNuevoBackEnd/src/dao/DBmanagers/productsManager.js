@@ -5,20 +5,16 @@ export default class Products {
         console.log('Products con DB en Mongo');
     }
 
-    
     getAll = async () => {
         const products = await productModel.find();
         return products.map(product => product.toObject());
     }
-
     save = async (product) => {
         return await productModel.create(product);
     }
-
     getProductByCode = async (codigoPasado) => {
         return await productModel.findOne(codigoPasado);
     }
-
     deleteProduct = async (codeABorrar) => {
         try {
             return await productModel.deleteOne(codeABorrar);

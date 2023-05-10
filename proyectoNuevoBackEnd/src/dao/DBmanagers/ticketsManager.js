@@ -7,6 +7,5 @@ export default class Tickets {
 
     getTicketsByID = async (id) => {
         return await ticketModel.findOne(id);
-
     }
 }

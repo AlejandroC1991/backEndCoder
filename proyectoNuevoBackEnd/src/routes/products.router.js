@@ -8,6 +8,6 @@ router.get('/', getAll);
 router.get('/:code', getProductByCode);
 router.post('/', save);
 router.delete('/:code', deleteProduct);
-router.put('/', updateByCode);
+router.put('/:code', updateByCode);
 
 export default router;

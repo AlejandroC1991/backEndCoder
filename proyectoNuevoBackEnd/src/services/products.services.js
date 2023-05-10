@@ -29,8 +29,15 @@ const deleteProduct = async (codeABorrar) => {
 }
 
 const updateByCode = async (codigoPasado, product) => {
-    const result = await PRODUCTSDAO.updateByCode({code: codigoPasado}, product );
-    return result;
+    try {
+        
+        const result = await PRODUCTSDAO.updateByCode(codigoPasado, product );
+        console.log(codigoPasado)
+        return result;
+    
+    } catch (error) {
+        console.log(error + 'ERROR : NO SE ACTUALIZO EL PRODUCTO ');
+    }
 }
 
 export {

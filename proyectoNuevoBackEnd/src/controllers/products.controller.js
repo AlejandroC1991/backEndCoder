@@ -72,23 +72,16 @@ const deleteProduct = async (req, res) => {
 
 const updateByCode = async (req, res) => {
 
-    const {
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category
-    } = req.body;
+    const { title,description,code,price,status,stock,category } = req.body;
 
     if (!title || !description || !code || !price || !status || !stock || !category) return res.status(400).send({
         status: 'error',
         error: 'Incomplete values'
     });
-
+    
     try {
-        const result = await updateByCodeProductService({
+        const result = await updateByCodeProductService(req.params.code,
+            {
             title,
             description,
             code,

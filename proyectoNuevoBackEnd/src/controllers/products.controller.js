@@ -28,9 +28,7 @@ const save = async (req, res) => {
 const getProductByCode = async (req, res) => {
     try {
         const code = Number(req.params.code);
-        console.log(code + "asd");
         const productsByCode = await getProductByCodeProductService(code);
-        console.log("asdasdasd")
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
@@ -49,11 +47,7 @@ const getProductByCode = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const productCode = Number(req.params.code);
-
-
         const productoBorrado = await deleteProductProductService(productCode);
-
-
         res.send({
             status: 'success',
             message: 'Producto eliminado correctamente',

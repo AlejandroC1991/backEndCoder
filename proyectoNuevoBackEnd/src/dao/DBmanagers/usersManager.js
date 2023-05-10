@@ -5,12 +5,10 @@ export default class Users{
         console.log('Users con DB en Mongo');
     }
     getByEmail = async (email) => {
-        const user = await userModel.findOne({ email });
-        return user;
+        return await userModel.findOne({ email });
     }
 
     save = async (user) => {
-        const result = await userModel.create(user);
-        return result;
+        return await userModel.create(user);
     }
 }

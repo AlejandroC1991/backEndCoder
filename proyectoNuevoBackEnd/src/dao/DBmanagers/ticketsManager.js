@@ -6,8 +6,7 @@ export default class Tickets {
     }
 
     getTicketsByID = async (id) => {
-        const ticketByID = await ticketModel.findOne(id);
-        return ticketByID;
+        return await ticketModel.findOne(id);
 
     }
 }

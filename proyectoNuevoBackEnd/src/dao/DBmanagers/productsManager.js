@@ -12,31 +12,23 @@ export default class Products {
     }
 
     save = async (product) => {
-        const result = await productModel.create(product);
-        return result;
+        return await productModel.create(product);
     }
 
     getProductByCode = async (codigoPasado) => {
-        const productByCode = await productModel.findOne(codigoPasado);
-        return productByCode;
-
+        return await productModel.findOne(codigoPasado);
     }
 
     deleteProduct = async (codeABorrar) => {
         try {
-            
-            const traerProducto = await productModel.deleteOne(codeABorrar);
-            return traerProducto;
+            return await productModel.deleteOne(codeABorrar);
         
         } catch (error) {
             console.log(error + 'error en la ruta');
         }
-
     }
-
     updateByCode = async (codigoPasado, product) => {
-        const result = await productModel.updateOne({code: codigoPasado}, product );
-        return result;
+        return await productModel.updateOne({code: codigoPasado}, product );
     }
 
 }

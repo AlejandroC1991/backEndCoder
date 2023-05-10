@@ -2,7 +2,7 @@ import {
   
     getTicketsByID as getTicketsByIDTicketService,
    
-} from '../services/products.services.js'
+} from '../services/tickets.services.js'
 
 
 const getTicketsByID = async (req, res) => {

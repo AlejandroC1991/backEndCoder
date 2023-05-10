@@ -13,6 +13,7 @@ import './src/dao/dbConfig.js';
 import usersRouter from './src/routes/users.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import productsRouter from './src/routes/products.router.js';
+import ticketsRouter from './src/routes/tickets.router.js';
 import nodemailer from 'nodemailer';
 import twilio from 'twilio';
 
@@ -36,6 +37,7 @@ app.use('/api/sessions', sessionsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/tickets', ticketsRouter);
 app.use('/', viewsRouter); 
 
 // PASSPORT

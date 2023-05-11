@@ -5,7 +5,7 @@ export default class Users{
         console.log('Users con DB en Mongo');
     }
     getByEmail = async (email) => {  
-        console.log("asdasdasd")
+        
         return await userModel.findOne( email );
     }
 

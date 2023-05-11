@@ -3,7 +3,7 @@ import { getByEmail, save } from '../controllers/users.controller.js';
 
 const router = Router();
 
-router.get('/', getByEmail);
+router.get('/:email', getByEmail);
 router.post('/', save);
 
 export default router;

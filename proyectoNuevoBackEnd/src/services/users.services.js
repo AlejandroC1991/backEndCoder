@@ -1,13 +1,11 @@
 import { USERSDAO } from "../dao/index.js";
 
 const save = async(user) => {
-    await USERSDAO.save(user);
-    return user;
+    return await USERSDAO.save(user);
 }
 
 const getByEmail = async(email) => {
-    const users = await USERSDAO.getByEmail(email);
-    return users;
+    return await USERSDAO.getByEmail({email});
 };
 
 export {

@@ -16,6 +16,9 @@ import productsRouter from './src/routes/products.router.js';
 import ticketsRouter from './src/routes/tickets.router.js';
 import nodemailer from 'nodemailer';
 import twilio from 'twilio';
+import compression from 'express-compression';
+import errorHandler from './customErrors/middlewares-errors/index.js';
+
 
 
 const app = express();
@@ -25,7 +28,9 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use(cookieParser());
 app.use(session({
     secret: "secretCode",
@@ -38,7 +43,8 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/tickets', ticketsRouter);
-app.use('/', viewsRouter); 
+app.use('/', viewsRouter);
+app.use(errorHandler);
 
 // PASSPORT
 initializePassport();
@@ -49,7 +55,9 @@ app.use(passport.session());
 app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority',
-        mongoOptions: { useNewUrlParser: true },
+        mongoOptions: {
+            useNewUrlParser: true
+        },
         ttl: 3600
     }),
     secret: 'secretCoder',
@@ -61,7 +69,7 @@ app.use(session({
 (async () => {
     try {
         await mongoose.connect('mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority');
-        
+
     } catch (error) {
         console.error('error');
     }
@@ -78,20 +86,18 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-app.get('/mail', async(req, res) => {
+app.get('/mail', async (req, res) => {
     await transporter.sendMail({
         from: 'alejandro.celiberto@gmail.com',
         to: 'alejandro.celiberto@findholding.com',
         subject: 'CORREO DE PRUEBA',
         html: `<div><h1>Hola, esto es una prueba de envio de correo con una imagen adjunta</h1>
         <img src="cid:find"/></div>`,
-        attachments: [
-            {
-                filename: 'find.png',
-                path: `${__dirname}/find.png`,
-                cid: 'find'
-            }
-        ]
+        attachments: [{
+            filename: 'find.png',
+            path: `${__dirname}/find.png`,
+            cid: 'find'
+        }]
     });
 
     res.send('Correo enviado existosamente');
@@ -120,7 +126,10 @@ app.get('/sms', async (req, res) => {
 });
 
 app.get('/custom-sms', async (req, res) => {
-    const { name, product } = req.query;
+    const {
+        name,
+        product
+    } = req.query;
     await client.messages.create({
         from: TWILIO_PHONE_NUMBER,
         to: '+541122563087',
@@ -130,18 +139,29 @@ app.get('/custom-sms', async (req, res) => {
     res.send('SMS sent');
 });
 
-app.get('/whatsapp', async(req, res) => {
-    let { name, product } = req.query;
+app.get('/whatsapp', async (req, res) => {
+    let {
+        name,
+        product
+    } = req.query;
     await client.messages.create({
         from: 'whatsapp:+14155238886',
         to: 'whatsapp:+5491122563087',
         body: `Hola ${name} gracias por tu compra. Tu producto es ${product}`
-        
+
     });
     console.log("el mensaje se envio");
 
     res.send('Whatsapp sent');
 })
+
+//COMPRESSION
+app.use(compression({
+    brotli: {
+        enabled: true,
+        zlib: {}
+    }
+}))
 
 
 app.listen(8080, () => console.log('Server running'));

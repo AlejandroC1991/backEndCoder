@@ -15,7 +15,7 @@ const ENVIRONMENT = process.env.NODE_ENV;
 //     },
 //     colors: {
 //         'fatal': 'red',
-//         'error': 'red',
+//         'error': 'orange',
 //         'warning': 'yellow',
 //         'info': 'green',
 //         'debug': 'blue'

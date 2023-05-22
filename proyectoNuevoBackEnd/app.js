@@ -18,6 +18,9 @@ import nodemailer from 'nodemailer';
 import twilio from 'twilio';
 import compression from 'express-compression';
 import errorHandler from './customErrors/middlewares-errors/index.js';
+import {
+    addLogger
+} from './utils/logger.js';
 
 
 
@@ -162,6 +165,33 @@ app.use(compression({
         zlib: {}
     }
 }))
+
+
+
+
+//LOGGER
+
+app.use(addLogger);
+
+app.get('/loggers', (req, res) => {
+    // Loguear a nivel consola
+    req.logger.error('Prueba error');
+    req.logger.warn('Prueba warn');
+    req.logger.info('Prueba info');
+    req.logger.debug('Prueba debug');
+    req.logger.silly('Prueba silly');
+
+    //Mensajes niveles custom
+    // req.logger.fatal('Prueba fatal');
+    // req.logger.error('Prueba error');
+    // req.logger.warning('Prueba warning');
+    // req.logger.info('Prueba info');
+    // req.logger.debug('Prueba debug');
+
+    res.send({
+        message: 'Prueba logger'
+    });
+});
 
 
 app.listen(8080, () => console.log('Server running'));

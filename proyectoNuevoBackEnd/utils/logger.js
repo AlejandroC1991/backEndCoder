@@ -134,6 +134,6 @@ export const addLogger = (req, res, next) => {
 export const addLoggerProd = (req, res, next) => {
     req.loggerProd = loggerProd;
     // req.logger.http(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
-    req.logger.info(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
+    req.loggerProd.info(`${req.method} en ${req.url} - ${new Date().toISOString()}`);
     next();
 }

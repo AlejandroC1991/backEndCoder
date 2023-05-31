@@ -1,53 +1,76 @@
+import Router from './router.js';
 import {
-    Router
-} from 'express';
+    generateToken
+} from '../../utils/utils.js';
 import {
-    getByEmail,
-    save
-} from '../controllers/users.controller.js';
-import CustomError from '../../customErrors/service-errors/customError.js';
-import EErrors from '../../customErrors/service-errors/enum.js';
-import {
-    generateUserErrorInfo
-} from '../../customErrors/service-errors/info.js';
+    compareHashedData,
+    hashData
+} from '../../utils/utils.js';
+import UsersManager from '../dao/DBmanagers/usersManager.js';
 
-const router = Router();
-const users = [];
+const usersManager = new UsersManager();
 
-router.get('/:email', getByEmail);
-router.post('/', save);
-router.post('/createUserWithMiddlewares', (req, res) => {
-    const {
-        first_name,
-        last_name,
-        email
-    } = req.body;
-    console.log(first_name, last_name, email)
+export default class UsersRouter extends Router {
+    init() {
+        this.post('/login', ["PUBLIC"], null, async (req, res) => {
+            const {
+                email,
+                password
+            } = req.body;
+            const user = await usersManager.getByEmail(email);
 
-    if (!first_name || !last_name || !email) {
-        throw CustomError.createError({
-            name: 'UserError',
-            cause: generateUserErrorInfo({
-                first_name,
-                last_name,
-                email
-            }),
-            message: 'Error tratando de crear un usuario',
-            code: EErrors.INVALID_TYPES_ERROR
+            if (!user) return res.sendClientError('incorrect credentials');
+
+            const comparePassword = await compareHashedData(
+                password,
+                user.password
+            );
+
+            if (!comparePassword) {
+                return res.sendClientError('incorrect credentials');
+            }
+
+            const accessToken = generateToken(user);
+
+            res.sendSuccess({
+                accessToken
+            });
+        });
+
+        this.post('/register', ["PUBLIC"], null, async (req, res) => {
+            try {
+                const {
+                    first_name,
+                    last_name,
+                    rol,
+                    email,
+                    password
+                } = req.body;
+
+                if (!first_name || !last_name || !email || !password || !rol) {
+                    return res.sendClientError('incomplete values');
+                }
+
+                const userDB = await usersManager.getByEmail(email);
+
+                if (userDB) {
+                    return res.sendClientError('user already exists');
+                } else {
+                    const hashPassword = await hashData(password);
+
+                    const newUser = {
+                        ...req.body,
+                    };
+
+                    newUser.password = hashPassword;
+
+                    const newUserDB = await usersManager.saveUser(newUser);
+                    res.sendSuccess(newUserDB);
+                }
+            } catch (error) {
+                console.log(error);
+                res.sendServerError(error);
+            }
         });
     }
-
-    const user = {
-        first_name,
-        last_name,
-        email
-    };
-
-    users.push(user);
-    res.send({
-        status: "success",
-        payload: user
-    });
-});
-
-export default router;
+}

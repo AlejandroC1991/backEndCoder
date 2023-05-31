@@ -1,42 +1,64 @@
+import * as usersService from '../services/users.services.js';
 import {
-    save as saveUsersService,
-    getByEmail as getByEmailUsersService
-} from '../services/users.services.js';
+    IncorrectLoginCredentials,
+    UserNotFound
+} from '../../utils/customExceptions.js';
 
-const getByEmail = async (req, res) => {
+export const login = async (req, res) => {
     try {
-        const email = String(req.params.email);
-        const userByEmail = await getByEmailUsersService(email);
-        if (!userByEmail) return res.send({
-            message: "NO EXISTE ESE EMAIL"
-        });
-        res.json({
-            
-            status: 'success',
-            payload: userByEmail
+        const {
+            email,
+            password
+        } = req.body;
+
+        const user = await usersService.getByEmailLogin(email);
+
+        const accessToken = await usersService.login(password, user);
+
+        res.sendSuccess({
+            accessToken
         });
     } catch (error) {
-        res.status(500).send({
-            message: ("hay un error email")
-        })}
-};
+        req.logger.fatal(error.message);
 
+        if (error instanceof UserNotFound) {
+            return res.sendClientError(error.message);
+        }
 
+        if (error instanceof IncorrectLoginCredentials) {
+            return res.sendClientError(error.message);
+        }
 
-
-
-
-const save = async (req, res) => {
-    try {
-        const user = req.body;
-        await saveUsersService(user);
-        res.send(user);
-    } catch (error) {
-        res.status(500).send(error);
+        res.sendServerError(error);
     }
 }
 
-export {
-    getByEmail,
-    save
+export const register = async (req, res) => {
+    try {
+        const {
+            first_name,
+            last_name,
+            rol,
+            email,
+            password
+        } = req.body;
+
+        if (!first_name || !last_name || !email || !password || !rol) {
+            return res.sendClientError('incomplete values');
+        }
+
+        const user = await usersService.getByEmailRegister(email);
+
+        if (user) {
+            return res.sendClientError('User already exists');
+        } else {
+            const register = await usersService.register({
+                ...req.body
+            });
+            res.sendSuccess(register);
+        }
+    } catch (error) {
+        req.logger.fatal(error.message);
+        res.sendServerError(error);
+    }
 }

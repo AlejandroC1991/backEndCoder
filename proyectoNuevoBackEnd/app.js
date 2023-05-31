@@ -1,26 +1,29 @@
 import express from "express";
-import __dirname from "./utils.js";
+import {
+    __dirname
+} from "./utils/utils.js";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose from "mongoose";
 import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
-import sessionsRouter from './src/routes/sessions.router.js';
-import viewsRouter from './src/routes/view.router.js';
 import initializePassport from './src/config/passport.config.js';
 import passport from 'passport';
-import './src/dao/dbConfig.js';
+
+import sessionsRouter from './src/routes/sessions.router.js';
+import viewsRouter from './src/routes/view.router.js';
 import usersRouter from './src/routes/users.router.js';
 import cartsRouter from './src/routes/carts.router.js';
 import productsRouter from './src/routes/products.router.js';
 import ticketsRouter from './src/routes/tickets.router.js';
-import nodemailer from 'nodemailer';
+
 import twilio from 'twilio';
 import compression from 'express-compression';
 import errorHandler from './customErrors/middlewares-errors/index.js';
 import {
     addLogger
 } from './utils/logger.js';
+import UsersRouter from './src/routes/users.router.js';
 
 
 
@@ -41,10 +44,12 @@ app.use(session({
     saveUninitialized: true
 }));
 
+const UsuariosRouter = new UsersRouter();
+
+app.use('/api/users', UsuariosRouter.getRouter())
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/tickets', ticketsRouter);
 app.use('/', viewsRouter);
 app.use(errorHandler);
@@ -79,32 +84,6 @@ app.use(session({
 })();
 
 
-//EMAIL NODEMAILER
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 587,
-    auth: {
-        user: 'alejandro.celiberto@gmail.com',
-        pass: 'jhygjjtotgxhzlbm'
-    }
-});
-
-app.get('/mail', async (req, res) => {
-    await transporter.sendMail({
-        from: 'alejandro.celiberto@gmail.com',
-        to: 'alejandro.celiberto@findholding.com',
-        subject: 'CORREO DE PRUEBA',
-        html: `<div><h1>Hola, esto es una prueba de envio de correo con una imagen adjunta</h1>
-        <img src="cid:find"/></div>`,
-        attachments: [{
-            filename: 'find.png',
-            path: `${__dirname}/find.png`,
-            cid: 'find'
-        }]
-    });
-
-    res.send('Correo enviado existosamente');
-});
 
 //SMS TWILIO
 

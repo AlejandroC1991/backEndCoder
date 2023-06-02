@@ -6,65 +6,37 @@ import ProductsRouter from './src/routes/products.router.js';
 import UsersRouter from './src/routes/users.router.js';
 import sessionsRouter from './src/routes/sessions.router.js';
 import {
-    addLogger
-} from './utils/utils.js';
-import {
+    addLogger,
     __dirname
-} from "./utils/utils.js";
+} from './utils/utils.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose from "mongoose";
-import handlebars from "express-handlebars";
+// import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
 import twilio from 'twilio';
 import compression from 'express-compression';
 
-
-
-
-
-
 const productsRouter = new ProductsRouter();
 const cartsRouter = new CartsRouter();
 const usersRouter = new UsersRouter();
-// const sessionsRouter = new SessionsRouter();
 
 const app = express();
 const PORT = 8080;
 
-
 initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
 
-app.use(addLogger)
+app.use(addLogger);
 app.use(express.static(`${__dirname}/public`));
-app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
-app.set('view engine', 'handlebars');
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
+// app.engine('handlebars', handlebars());
+// app.set('view engine', 'handlebars');
+
 app.use(cookieParser());
-app.use(session({
-    secret: "secretCode",
-    resave: true,
-    saveUninitialized: true
-}));
-
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-app.use('/api/users', usersRouter.getRouter())
-app.use('/api/products', productsRouter.getRouter());
-app.use('/api/carts', cartsRouter.getRouter());
-app.use('/api/sessions', sessionsRouter);
-// app.use('/api/tickets', ticketsRouter);
-// app.use('/', viewsRouter);
-// app.use(errorHandler);
-
 
 app.use(session({
     store: MongoStore.create({
@@ -74,18 +46,25 @@ app.use(session({
         },
         ttl: 3600
     }),
-    secret: 'secretCoder',
+    secret: 'secretCode',
     resave: true,
     saveUninitialized: true
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api/users', usersRouter.getRouter());
+app.use('/api/products', productsRouter.getRouter());
+app.use('/api/carts', cartsRouter.getRouter());
+app.use('/api/sessions', sessionsRouter);
 
 (async () => {
     try {
         await mongoose.connect('mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority');
-
+        console.log('Connected to MongoDB');
     } catch (error) {
-        console.error('error');
+        console.error('MongoDB connection error:', error);
     }
 })();
 

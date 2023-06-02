@@ -1,14 +1,12 @@
+import * as productsService from '../services/products.services.js';
 import {
-    save as saveProductService,
-    getAll as getAllProductService,
-    getProductByCode as getProductByCodeProductService,
-    deleteProduct as deleteProductProductService,
-    updateByCode as updateByCodeProductService,
-} from '../services/products.services.js'
+    IncorrectLoginCredentials,
+    UserNotFound
+} from '../../utils/customExceptions.js';
 
 const getAll = async (req, res) => {
     try {
-        const products = await getAllProductService();
+        const products = await productsService.getAllProductService();
         res.send(products);
     } catch (error) {
         res.status(500).send(error);
@@ -18,7 +16,7 @@ const getAll = async (req, res) => {
 const save = async (req, res) => {
     try {
         const product = req.body;
-        await saveProductService(product);
+        await cartsService.saveProductService(product);
         res.send(product);
     } catch (error) {
         res.status(500).send(error);
@@ -28,12 +26,12 @@ const save = async (req, res) => {
 const getProductByCode = async (req, res) => {
     try {
         const code = Number(req.params.code);
-        const productsByCode = await getProductByCodeProductService(code);
+        const productsByCode = await productsService.getProductByCodeProductService(code);
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
         res.json({
-            
+
             status: 'success',
             payload: productsByCode
         });
@@ -47,7 +45,7 @@ const getProductByCode = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const productCode = Number(req.params.code);
-        const productoBorrado = await deleteProductProductService(productCode);
+        const productoBorrado = await productsService.deleteProductProductService(productCode);
         res.send({
             status: 'success',
             message: 'Producto eliminado correctamente',
@@ -66,16 +64,23 @@ const deleteProduct = async (req, res) => {
 
 const updateByCode = async (req, res) => {
 
-    const { title,description,code,price,status,stock,category } = req.body;
+    const {
+        title,
+        description,
+        code,
+        price,
+        status,
+        stock,
+        category
+    } = req.body;
 
     if (!title || !description || !code || !price || !status || !stock || !category) return res.status(400).send({
         status: 'error',
         error: 'Incomplete values'
     });
-    
+
     try {
-        const result = await updateByCodeProductService(req.params.code,
-            {
+        const result = await productsService.updateByCodeProductService(req.params.code, {
             title,
             description,
             code,

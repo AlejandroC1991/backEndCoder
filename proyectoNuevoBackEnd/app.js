@@ -1,4 +1,13 @@
-import express from "express";
+import express from 'express';
+import initializePassport from './src/config/passport.config.js';
+import passport from 'passport';
+import CartsRouter from './src/routes/products.router.js';
+import ProductsRouter from './src/routes/products.router.js';
+import UsersRouter from './src/routes/users.router.js';
+import sessionsRouter from './src/routes/sessions.router.js';
+import {
+    addLogger
+} from './utils/utils.js';
 import {
     __dirname
 } from "./utils/utils.js";
@@ -7,28 +16,28 @@ import MongoStore from 'connect-mongo';
 import mongoose from "mongoose";
 import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
-import initializePassport from './src/config/passport.config.js';
-import passport from 'passport';
-
-import sessionsRouter from './src/routes/sessions.router.js';
-import viewsRouter from './src/routes/view.router.js';
-import usersRouter from './src/routes/users.router.js';
-import cartsRouter from './src/routes/carts.router.js';
-import productsRouter from './src/routes/products.router.js';
-import ticketsRouter from './src/routes/tickets.router.js';
-
 import twilio from 'twilio';
 import compression from 'express-compression';
-import errorHandler from './customErrors/middlewares-errors/index.js';
-import {
-    addLogger
-} from './utils/logger.js';
-import UsersRouter from './src/routes/users.router.js';
 
 
+
+
+
+
+const productsRouter = new ProductsRouter();
+const cartsRouter = new CartsRouter();
+const usersRouter = new UsersRouter();
+// const sessionsRouter = new SessionsRouter();
 
 const app = express();
+const PORT = 8080;
 
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(addLogger)
 app.use(express.static(`${__dirname}/public`));
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
@@ -44,20 +53,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
-const UsuariosRouter = new UsersRouter();
-
-app.use('/api/users', UsuariosRouter.getRouter())
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use('/api/users', usersRouter.getRouter())
+app.use('/api/products', productsRouter.getRouter());
+app.use('/api/carts', cartsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter);
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
-app.use('/api/tickets', ticketsRouter);
-app.use('/', viewsRouter);
-app.use(errorHandler);
-
-// PASSPORT
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use('/api/tickets', ticketsRouter);
+// app.use('/', viewsRouter);
+// app.use(errorHandler);
 
 
 app.use(session({
@@ -146,31 +152,4 @@ app.use(compression({
 }))
 
 
-
-
-//LOGGER
-
-app.use(addLogger);
-
-app.get('/loggers', (req, res) => {
-    // Loguear a nivel consola
-    // req.logger.error('Prueba error');
-    // req.logger.warn('Prueba warn');
-    // req.logger.info('Prueba info');
-    // req.logger.debug('Prueba debug');
-    // req.logger.silly('Prueba silly');
-
-    //Mensajes niveles custom
-    req.logger.fatal('Prueba fatal');
-    req.logger.error('Prueba error');
-    req.logger.warning('Prueba warning');
-    req.logger.info('Prueba info');
-    req.logger.debug('Prueba debug');
-
-    res.send({
-        message: 'Prueba logger'
-    });
-});
-
-
-app.listen(8080, () => console.log('Server running'));
+app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));

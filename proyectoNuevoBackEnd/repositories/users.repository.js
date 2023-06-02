@@ -8,8 +8,8 @@ export default class UsersRepository {
         return result;
     }
 
-    save = async (user) => {
-        const result = await this.dao.save(user);
+    saveUser = async (user) => {
+        const result = await this.dao.saveUser(user);
         return result;
     }
 }

@@ -1,27 +1,30 @@
-import { CARTSDAO } from "../dao/index.js";
+import {
+    Carts
+} from "../dao/factory.js";
+import CartsRepository from "../../repositories/carts.repository.js";
 
-const save = async(cart) => {
-    await CARTSDAO.save(cart);
+const carts = new Carts();
+const cartsRepository = new CartsRepository(carts);
+
+
+const save = async (cart) => {
+    await cartsRepository.save(cart);
     return cart;
 }
 
 const getAll = async () => {
-    const carts = await CARTSDAO.getAll();
+    const carts = await cartsRepository.getAll();
     return carts;
 }
 
 
-// const getProductByCode = async (codigoPasado) => {
-//     const productByCode = await CARTSDAO.getProductByCode({code:codigoPasado });
-//     return productByCode;
-
-// }
-
 const deleteCart = async (IDPasado) => {
     try {
-        const deleteCart = await CARTSDAO.deleteCart({idCarrito:IDPasado });
+        const deleteCart = await cartsRepository.deleteCart({
+            idCarrito: IDPasado
+        });
         return deleteCart;
-    
+
     } catch (error) {
         console.log(error + 'error en la ruta');
     }
@@ -29,12 +32,16 @@ const deleteCart = async (IDPasado) => {
 }
 
 const update = async (id, cart) => {
-    const result = await CARTSDAO.update({_id: id}, cart);
+    const result = await cartsRepository.update({
+        _id: id
+    }, cart);
     return result;
 }
 
 const getCartByID = async (IDPasado) => {
-    const cartByID = await CARTSDAO.getCartByID({idCarrito:IDPasado });
+    const cartByID = await cartsRepository.getCartByID({
+        idCarrito: IDPasado
+    });
     return cartByID;
 
 }
@@ -42,7 +49,6 @@ const getCartByID = async (IDPasado) => {
 export {
     save,
     getAll,
-    // getProductByCode,
     deleteCart,
     update,
     getCartByID

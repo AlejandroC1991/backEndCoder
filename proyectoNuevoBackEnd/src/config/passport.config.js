@@ -1,5 +1,5 @@
 import passport from 'passport';
-import userModel from '../dao/DBmanagers/models/users.js';
+import userModel from '../dao/DBmanagers/usersManager.js';
 import GitHubStrategy from 'passport-github2';
 import jwt from 'passport-jwt';
 

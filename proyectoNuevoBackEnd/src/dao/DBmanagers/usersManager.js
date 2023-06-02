@@ -1,15 +1,17 @@
-import  userModel  from "./models/users.js";
+import {
+    usersModel
+} from "../DBmanagers/models/users.js"
 
-export default class Users{
-    constructor() {
-        console.log('Users con DB en Mongo');
-    }
-    getByEmail = async (email) => {  
-        
-        return await userModel.findOne( email );
+export default class UsersManager {
+    getByEmail = async (email) => {
+        const user = await usersModel.findOne({
+            email
+        });
+        return user;
     }
 
-    save = async (user) => {
-        return await userModel.create(user);
+    saveUser = async (user) => {
+        let result = await usersModel.create(user);
+        return result;
     }
 }

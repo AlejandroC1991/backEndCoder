@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 
-const userCollection = 'users';
-
-const UserSchema = new mongoose.Schema({
-    
+const usersSchema = new mongoose.Schema({
     first_name: {
         type: String,
         require: true,
@@ -17,25 +14,15 @@ const UserSchema = new mongoose.Schema({
         require: true,
         unique: true,
     },
-    age: {
-        type: Number,
-        require: true,
-    },
     password: {
-        type: String, 
-        require: true,
-    },
-    carts: {
         type: String,
         require: true,
     },
     rol: {
         type: String,
         require: true,
-        default: "user",
+        default: 'user',
     }
 });
 
-const userModel = mongoose.model(userCollection, UserSchema);
-
-export default userModel;
+export const usersModel = mongoose.model('Users', usersSchema);

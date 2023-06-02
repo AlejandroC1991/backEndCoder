@@ -1,13 +1,21 @@
-import { Router } from 'express';
-import { save, getAll,getProductByCode ,deleteProduct ,updateByCode} from '../controllers/products.controller.js';
+import Router from './router.js';
+import Products from '../dao/DBmanagers/productsManager.js';
+import {
+    save,
+    getAll,
+    getProductByCode,
+    deleteProduct,
+    updateByCode
+} from '../controllers/products.controller.js';
 
+const productsManager = new Products();
 
-const router = Router();
-
-router.get('/', getAll);
-router.get('/:code', getProductByCode);
-router.post('/', save);
-router.delete('/:code', deleteProduct);
-router.put('/:code', updateByCode);
-
-export default router;
+export default class ProductsRouter extends Router {
+    init() {
+        this.get('/', ["PUBLIC"], null, getAll)
+        this.get('/:code', ["PUBLIC"], null, getProductByCode)
+        this.post('/', ["PUBLIC"], null, save)
+        this.delete('/:code', ["PUBLIC"], null, deleteProduct)
+        this.put('/:code', ["PUBLIC"], null, updateByCode)
+    };
+};

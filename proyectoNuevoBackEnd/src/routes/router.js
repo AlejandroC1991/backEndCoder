@@ -26,6 +26,7 @@ export default class Router {
     }
 
     post(path, policies, passportStrategy, ...callbacks) {
+        console.log(path, policies, passportStrategy, callbacks)
         this.router.post(
             path,
             this.applyCustomPassportCall(passportStrategy),

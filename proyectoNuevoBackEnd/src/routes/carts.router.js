@@ -1,16 +1,21 @@
-import { Router } from 'express';
-import { save, getAll,getCartByID ,deleteCart} from '../controllers/carts.controller.js';
+import Router from './router.js';
+import Carts from '../dao/DBmanagers/cartsManager.js';
+import {
+    save,
+    getAll,
+    getCartByID,
+    deleteCart
 
+} from '../controllers/products.controller.js';
 
-const router = Router();
+const cartsManager = new Carts();
 
-router.get('/', getAll);
-router.get('/:idCarrito', getCartByID);
-router.post('/', save);
-router.delete('/:idCarrito', deleteCart);
-// router.put('/:code', update);
+export default class CartsRouter extends Router {
+    init() {
+        this.get('/', ["PUBLIC"], null, getAll)
+        this.get('/:code', ["PUBLIC"], null, getCartByID)
+        this.post('/', ["PUBLIC"], null, save)
+        this.delete('/:code', ["PUBLIC"], null, deleteCart)
 
-
-
-export default router;
-
+    };
+};

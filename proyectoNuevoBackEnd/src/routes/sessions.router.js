@@ -1,7 +1,10 @@
 import {
     Router
 } from 'express';
-import userModel from '../dao/DBmanagers/models/users.js';
+import {
+    usersModel
+} from '../dao/DBmanagers/models/users.js';
+
 import {
     hashData,
     compareHashedData,
@@ -21,7 +24,7 @@ router.post('/register', async (req, res) => {
     } = req.body;
 
     try {
-        const exists = await userModel.findOne({
+        const exists = await usersModel.findOne({
             email
         });
         if (exists) return res.status(400).send({
@@ -37,7 +40,7 @@ router.post('/register', async (req, res) => {
             password: hashData(password)
         };
 
-        await userModel.create(user);
+        await usersModel.create(user);
 
         res.send({
             status: 'success',
@@ -65,7 +68,7 @@ router.post('/login', async (req, res) => {
         });
 
     try {
-        const user = await userModel.findOne({
+        const user = await usersModel.findOne({
             email
         });
 
@@ -110,7 +113,7 @@ router.post('/reset', async (req, res) => {
         });
 
     try {
-        const user = await userModel.findOne({
+        const user = await usersModel.findOne({
             email
         });
 
@@ -121,7 +124,7 @@ router.post('/reset', async (req, res) => {
 
         user.password = createHash(password);
 
-        await userModel.updateOne({
+        await usersModel.updateOne({
             email
         }, user);
 

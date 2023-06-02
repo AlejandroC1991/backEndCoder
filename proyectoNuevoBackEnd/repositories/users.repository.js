@@ -1,6 +1,8 @@
+import UserDao from '../src/dao/DBmanagers/usersManager.js';
 export default class UsersRepository {
     constructor(dao) {
         this.dao = dao;
+        this.dao = new UserDao();
     }
 
     getByEmail = async (email) => {

@@ -16,6 +16,7 @@ import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import twilio from 'twilio';
 import compression from 'express-compression';
+import ResetPasswordRouter from './src/routes/reset-password.router.js';
 
 const productsRouter = new ProductsRouter();
 const cartsRouter = new CartsRouter();
@@ -58,6 +59,8 @@ app.use('/api/users', usersRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/carts', cartsRouter.getRouter());
 app.use('/api/sessions', sessionsRouter);
+app.use('/api/reset-password', ResetPasswordRouter);
+
 
 (async () => {
     try {

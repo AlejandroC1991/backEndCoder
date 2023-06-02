@@ -3,6 +3,7 @@ import {
     __dirname
 }
 from '../../utils/utils.js';
+import createTransport from 'nodemailer';
 
 //EMAIL NODEMAILER
 const transporter = nodemailer.createTransport({
@@ -27,4 +28,27 @@ export const sendEmail = async (email) => {
             cid: 'find'
         }]
     });
+}
+
+export async function sendMail(data) {
+
+    let transporter = createTransport({
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: process.env.MAIL_USERNAME, // generated ethereal user
+            pass: process.env.MAIL_PASSWORD, // generated ethereal password
+        },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+        from: `"${data.fromName}" <${data.fromEmail}>`, // sender address
+        to: `${data.toEmail.join(",")}`, // list of receivers
+        subject: data.subject, // Subject line       
+        html: data.body, // html body
+    });
+
+    return info
 }

@@ -10,7 +10,6 @@ export const login = async (req, res) => {
             email,
             password
         } = req.body;
-
         const user = await usersService.getByEmailLogin(email);
 
         const accessToken = await usersService.login(password, user);
@@ -42,7 +41,7 @@ export const register = async (req, res) => {
             email,
             password
         } = req.body;
-        console.log("Asdasdasdas")
+
         if (!first_name || !last_name || !email || !password || !rol) {
             return res.sendClientError('incomplete values');
         }

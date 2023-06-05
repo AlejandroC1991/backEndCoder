@@ -2,11 +2,12 @@ import {
     ForgotPassword
 } from "../services/reset-password.services.js";
 
+
 const forgotPasswordHandler = async (req, res) => {
     const email = req.body.email;
     if (email == "") {
         res.status(400).json({
-            "err": "Email is required"
+            "err": "El Email es requerido "
         })
         return
     }

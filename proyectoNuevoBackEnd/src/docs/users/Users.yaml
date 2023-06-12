@@ -1,20 +1,36 @@
 paths:
-  /api/users:
-    getByEmailLogin:
-      summary: Obtiene usuario por email
+  /api/users/login:
+    post:
+      summary: Se fija si existe el usuario por email
       tags:
         - Users
       responses:
         "200":
-          description: El usuario fue obtenido satisfactoriamente de la base de datos
+          description: El usuario existe
           content:
             appplication/json:
               schema:
                 type: array
                 items:
                   $ref: "#components/schemas/User"
-        "500":
-          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo de conexión a la base de datos
+        "400":
+          description: User not found
+/api/users/register:
+  post:
+    summary: Registra el usuario con los datos que le pasamos
+    tags:
+      - Users
+    responses:
+      "200":
+        description: Registra el usuario correctamente
+        content:
+          appplication/json:
+            schema:
+              type: array
+              items:
+                $ref: "#components/schemas/User"
+      "400":
+        description: Ya existe el usuario con ese email
 
 components:
   schemas:

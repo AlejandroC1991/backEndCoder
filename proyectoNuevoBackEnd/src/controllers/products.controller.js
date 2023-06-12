@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
 const save = async (req, res) => {
     try {
         const product = req.body;
-        await cartsService.saveProductService(product);
+        await productsService.saveProductService(product);
         res.send(product);
     } catch (error) {
         res.status(500).send(error);
@@ -37,7 +37,7 @@ const getProductByCode = async (req, res) => {
         });
     } catch (error) {
         res.status(500).send({
-            message: ("hay un error HOLA")
+            message: ("hay un error")
         });
     }
 }

@@ -1,0 +1,122 @@
+paths:
+  /api/products:
+    get:
+      summary: Trae todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Te muestra todos los productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: No te trae productos
+  /api/products/:code:
+    get:
+      summary: Trae productos por código
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Te muestra el producto con "x" código
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error
+  /api/products/:
+    post:
+      summary: Crea productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Crea el producto
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Datos incompletos
+    delete:
+      summary: Elimina productos por código
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: No se pudo eliminar el producto
+    put:
+      summary: Actualiza productos por código
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: No se pudo actualizar el producto
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripcion del producto
+        code:
+          type: number
+          description: Codigo del producto
+        price:
+          type: number
+          description: Precio del producto
+        status:
+          type: boolean
+          description: Estado del producto
+        stock:
+          type: number
+          description: Stock del producto
+        category:
+          type: string
+          description: Categoria del producto
+        id:
+          type: number
+          description: ID del producto
+        carts:
+          type: array
+          description: Carrito del producto
+      example:
+        title: Botella
+        description: Botella de 1.5L
+        code: 12
+        price: 1500
+        status: true
+        stock: 150
+        category: Plastico
+        id: 1
+        carts: []

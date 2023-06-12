@@ -17,6 +17,9 @@ import cookieParser from 'cookie-parser';
 import twilio from 'twilio';
 import compression from 'express-compression';
 import ResetPasswordRouter from './src/routes/reset-password.router.js';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+import __mainDirname from './utils/index.js';
 
 const productsRouter = new ProductsRouter();
 const cartsRouter = new CartsRouter();
@@ -54,6 +57,21 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+console.log(__mainDirname + "HOLA COMO VA");
+const swaggerOptiones = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentacion de mi ecommerce',
+            description: 'API pensada para realizar una compra de un producto en un ecommerce'
+        }
+    },
+    apis: [`${__mainDirname}/src/docs/**/*.yaml`]
+}
+
+const spects = swaggerJSDoc(swaggerOptiones)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(spects));
 
 app.use('/api/users', usersRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());

@@ -58,7 +58,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-console.log(__mainDirname + "HOLA COMO VA");
+
 const swaggerOptiones = {
     definition: {
         openapi: '3.0.1',

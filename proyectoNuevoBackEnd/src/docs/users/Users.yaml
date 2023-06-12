@@ -1,12 +1,12 @@
 paths:
   /api/users:
-    get:
-      summary: Obtiene todos los usuarios
+    getByEmailLogin:
+      summary: Obtiene usuario por email
       tags:
         - Users
       responses:
         "200":
-          description: Los usuarios fueron obtenidos satisfactoriamente de la base de datos
+          description: El usuario fue obtenido satisfactoriamente de la base de datos
           content:
             appplication/json:
               schema:

@@ -87,10 +87,38 @@ const deleteCart = async (req, res) => {
 
 }
 
+const updateCart = async (req, res) => {
+    try {
+        const {
+            cartID,
+            productID
+        } = req.params;
+        const product = await productsManager.getProductByCode(productID);
+        if (!product) return res.sendNotFoundError('producto no encontrado');
+
+        const cart = await cartsManager.getCartByID(cartID);
+
+        if (!cart) return res.sendNotFoundError('carrito no encontrado');
+
+        product.carts.push({
+            cart: cartID
+        });
+
+        const result = await productsManager.updateByCode(productID, product);
+
+        res.sendSuccess(result);
+    } catch (error) {
+
+    }
+
+
+}
+
 
 export {
     save,
     getAll,
     getCartByID,
     deleteCart,
+    updateCart,
 }

@@ -14,16 +14,14 @@ const save = async (product) => {
 
 const getAll = async () => {
     const products = await productsRepository.getAll();
+    console.log('hasta aca llega')
     return products;
 }
 
 
 const getProductByCode = async (codigoPasado) => {
-    const productByCode = await productsRepository.getProductByCode({
-        code: codigoPasado
-    });
+    const productByCode = await productsRepository.getProductByCode(codigoPasado);
     return productByCode;
-
 }
 
 const deleteProduct = async (codeABorrar) => {

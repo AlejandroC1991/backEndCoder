@@ -39,14 +39,12 @@ export const productsSchema = new mongoose.Schema({
         require: true,
     },
     carts: {
-        type: [
-            {
-                cart: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "carts",
-                }
+        type: [{
+            cart: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "carts",
             }
-        ],
+        }],
         default: [],
     },
 
@@ -54,7 +52,7 @@ export const productsSchema = new mongoose.Schema({
 
 
 productsSchema.plugin(mongoosePaginate);
-productsSchema.pre('find', function() {
+productsSchema.pre('find', function () {
     this.populate('carts.cart');
 });
 

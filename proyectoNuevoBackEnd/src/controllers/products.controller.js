@@ -6,7 +6,8 @@ import {
 
 const getAll = async (req, res) => {
     try {
-        const products = await productsService.getAllProductService();
+
+        const products = await productsService.getAll();
         res.send(products);
     } catch (error) {
         res.status(500).send(error);
@@ -16,7 +17,7 @@ const getAll = async (req, res) => {
 const save = async (req, res) => {
     try {
         const product = req.body;
-        await productsService.saveProductService(product);
+        await productsService.save(product);
         res.send(product);
     } catch (error) {
         res.status(500).send(error);
@@ -26,12 +27,11 @@ const save = async (req, res) => {
 const getProductByCode = async (req, res) => {
     try {
         const code = Number(req.params.code);
-        const productsByCode = await productsService.getProductByCodeProductService(code);
+        const productsByCode = await productsService.getProductByCode(code);
         if (!productsByCode) return res.send({
             message: "NO EXISTE ESE PRODUCTO"
         });
         res.json({
-
             status: 'success',
             payload: productsByCode
         });
@@ -39,6 +39,7 @@ const getProductByCode = async (req, res) => {
         res.status(500).send({
             message: ("hay un error")
         });
+        console.log(error)
     }
 }
 

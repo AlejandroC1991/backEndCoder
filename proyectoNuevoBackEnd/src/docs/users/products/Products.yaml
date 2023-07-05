@@ -6,7 +6,7 @@ paths:
         - Products
       responses:
         "200":
-          description: Te muestra todos los productos
+          description: Te muestra los productos satisfactoriamente
           content:
             application/json:
               schema:
@@ -14,7 +14,7 @@ paths:
                 items:
                   $ref: "#components/schemas/Products"
         "500":
-          description: No te trae productos
+          description: Error, no te trae productos
   /api/products/:code:
     get:
       summary: Trae productos por código
@@ -109,7 +109,7 @@ components:
           description: ID del producto
         carts:
           type: array
-          description: Carrito del producto
+          description: Carrito
       example:
         title: Botella
         description: Botella de 1.5L

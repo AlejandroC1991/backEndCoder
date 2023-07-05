@@ -6,7 +6,7 @@ import {
     getCartByID,
     deleteCart
 
-} from '../controllers/products.controller.js';
+} from '../controllers/carts.controller.js';
 
 const cartsManager = new Carts();
 

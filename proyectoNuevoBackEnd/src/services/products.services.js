@@ -26,10 +26,15 @@ const getProductByCode = async (codigoPasado) => {
 
 const deleteProduct = async (codeABorrar) => {
     try {
-        const traerProducto = await productsRepository.deleteProduct({
-            code: codeABorrar
-        });
-        return traerProducto;
+        const traerProducto = await productsRepository.deleteProduct(codeABorrar);
+        if (traerProducto.deletedCount == 0) {
+            return {
+                message: "El producto no existe en la base de datos"
+            };
+        } else {
+            console.log(traerProducto)
+            return traerProducto;
+        };
 
     } catch (error) {
         console.log(error + 'error en la ruta');

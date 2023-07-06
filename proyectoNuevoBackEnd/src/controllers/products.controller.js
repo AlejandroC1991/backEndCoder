@@ -46,10 +46,9 @@ const getProductByCode = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const productCode = Number(req.params.code);
-        const productoBorrado = await productsService.deleteProductProductService(productCode);
-        res.send({
+        const productoBorrado = await productsService.deleteProduct(productCode);
+        res.json({
             status: 'success',
-            message: 'Producto eliminado correctamente',
             payload: productoBorrado
         });
     } catch (error) {

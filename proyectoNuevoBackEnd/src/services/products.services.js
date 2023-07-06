@@ -14,7 +14,6 @@ const save = async (product) => {
 
 const getAll = async () => {
     const products = await productsRepository.getAll();
-    console.log('hasta aca llega')
     return products;
 }
 
@@ -32,7 +31,6 @@ const deleteProduct = async (codeABorrar) => {
                 message: "El producto no existe en la base de datos"
             };
         } else {
-            console.log(traerProducto)
             return traerProducto;
         };
 
@@ -46,8 +44,14 @@ const updateByCode = async (codigoPasado, product) => {
     try {
 
         const result = await productsRepository.updateByCode(codigoPasado, product);
-        console.log(codigoPasado)
-        return result;
+        if (result.modifiedCount == 0) {
+            return {
+                message: "El producto que desea actualizar no existe en la base de datos"
+            };
+        } else {
+            return result;
+        };
+
 
     } catch (error) {
         console.log(error + 'ERROR : NO SE ACTUALIZO EL PRODUCTO ');

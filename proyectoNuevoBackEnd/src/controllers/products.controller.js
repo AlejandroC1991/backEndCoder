@@ -80,7 +80,7 @@ const updateByCode = async (req, res) => {
     });
 
     try {
-        const result = await productsService.updateByCodeProductService(req.params.code, {
+        const result = await productsService.updateByCode(req.params.code, {
             title,
             description,
             code,

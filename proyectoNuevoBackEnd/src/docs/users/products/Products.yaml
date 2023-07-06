@@ -47,36 +47,37 @@ paths:
                   $ref: "#components/schemas/Products"
         "500":
           description: Datos incompletos
-    delete:
-      summary: Elimina productos por código
-      tags:
-        - Products
-      responses:
-        "200":
-          description: Producto eliminado correctamente
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Products"
-        "500":
-          description: No se pudo eliminar el producto
-    put:
-      summary: Actualiza productos por código
-      tags:
-        - Products
-      responses:
-        "200":
-          description: Producto actualizado correctamente
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Products"
-        "500":
-          description: No se pudo actualizar el producto
+/api/products/:code:
+  delete:
+    summary: Elimina productos por código
+    tags:
+      - Products
+    responses:
+      "200":
+        description: Producto eliminado correctamente
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#components/schemas/Products"
+      "500":
+        description: No se pudo eliminar el producto
+  put:
+    summary: Actualiza productos por código
+    tags:
+      - Products
+    responses:
+      "200":
+        description: Producto actualizado correctamente
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#components/schemas/Products"
+      "500":
+        description: No se pudo actualizar el producto
 
 components:
   schemas:

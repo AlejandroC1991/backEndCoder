@@ -23,23 +23,14 @@ const usersRepository = new UsersRepository(users);
 
 export const getByEmailLogin = async (email) => {
     const user = await usersRepository.getByEmail(email);
+    console.log(user + "aca esta el usuario")
     if (!user) {
-        throw new UserNotFound('User not found');
+        throw new UserNotFound('El usuario no existe');
     }
     return user;
 }
-
-export const getByEmailRegister = async (email) => {
-    const user = await usersRepository.getByEmail(email);
-    return user;
-}
-
 export const login = async (password, user) => {
-    const comparePassword = await compareHashedData(
-        password,
-        user.password
-    );
-
+    const comparePassword = await compareHashedData(password, user.password);
     if (!comparePassword) {
         throw new IncorrectLoginCredentials('Incorrect credentials')
     }
@@ -51,7 +42,6 @@ export const login = async (password, user) => {
         subject: 'Intento de login',
         html: loginNotification
     }
-
     await sendEmail(email);
 
     return accessToken;
@@ -59,10 +49,12 @@ export const login = async (password, user) => {
 
 export const register = async (user) => {
     const hashPassword = await hashData(user.password);
-
     user.password = hashPassword;
-
     const newUserDB = await usersRepository.saveUser(user);
-
     return newUserDB;
+}
+
+export const getByEmailRegister = async (email) => {
+    const user = await usersRepository.getByEmail(email);
+    return user;
 }

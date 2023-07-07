@@ -22,8 +22,10 @@ const hashData = async (password) => {
 
 //  bcryp
 const compareHashedData = async (password, passwordBD) => {
-    return bcrypt.compare(password, passwordBD); // compare: metodo de bcrypt - arroja true/false
+    const result = await bcrypt.compare(password, passwordBD);
+    return result;
 };
+
 
 const generateToken = (user) => {
     const token = jwt.sign({

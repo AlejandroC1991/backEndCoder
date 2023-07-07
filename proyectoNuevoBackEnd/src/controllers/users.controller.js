@@ -11,23 +11,18 @@ export const login = async (req, res) => {
             password
         } = req.body;
         const user = await usersService.getByEmailLogin(email);
-
         const accessToken = await usersService.login(password, user);
-
         res.sendSuccess({
             accessToken
         });
     } catch (error) {
         req.logger.fatal(error.message);
-
         if (error instanceof UserNotFound) {
             return res.sendClientError(error.message);
         }
-
         if (error instanceof IncorrectLoginCredentials) {
             return res.sendClientError(error.message);
         }
-
         res.sendServerError(error);
     }
 }
@@ -43,13 +38,13 @@ export const register = async (req, res) => {
         } = req.body;
 
         if (!first_name || !last_name || !email || !password || !rol) {
-            return res.sendClientError('incomplete values');
+            return res.sendClientError('Valores incompletos, falta completar algun campo requerido');
         }
 
         const user = await usersService.getByEmailRegister(email);
 
         if (user) {
-            return res.sendClientError('User already exists');
+            return res.sendClientError('El usuario ya existe');
         } else {
             const register = await usersService.register({
                 ...req.body

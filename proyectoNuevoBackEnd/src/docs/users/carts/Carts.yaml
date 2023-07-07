@@ -1,93 +1,110 @@
-# paths:
-#   /api/carts/{cartID}/product/{productID}:
-#     put:
-#       summary: Asigna un producto a un carrito especifico
-#       tags:
-#         - Carts
-#         parameters:
-#         - name : cartID
-#           in : path
-#           required : true
-#           description : ID del carrito
-#           schema :
-#           $type: String
-#            parameters:
-#         - name : productID
-#           in : path
-#           required : true
-#           description : ID del producto
-#           schema :
-#           $type: String
-#       responses:
-#         "200":
-#           description: Los productos fueron asignados correctamente al carrito
-#           content:
-#             application/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   $ref: "#components/schemas/Products"
-#         "500":
-#           description: Error, no te trae productos
-#   /api/products/:code:
-#     get:
-#       summary: Trae productos por código
-#       tags:
-#         - Products
-#       responses:
-#         "200":
-#           description: Te muestra el producto con "x" código
-#           content:
-#             application/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   $ref: "#components/schemas/Products"
-#         "500":
-#           description: Error
-#   /api/products/:
-#     post:
-#       summary: Crea productos
-#       tags:
-#         - Products
-#       responses:
-#         "200":
-#           description: Crea el producto
-#           content:
-#             application/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   $ref: "#components/schemas/Products"
-#         "500":
-#           description: Datos incompletos
-#     delete:
-#       summary: Elimina productos por código
-#       tags:
-#         - Products
-#       responses:
-#         "200":
-#           description: Producto eliminado correctamente
-#           content:
-#             application/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   $ref: "#components/schemas/Products"
-#         "500":
-#           description: No se pudo eliminar el producto
-#     put:
-#       summary: Actualiza productos por código
-#       tags:
-#         - Products
-#       responses:
-#         "200":
-#           description: Producto actualizado correctamente
-#           content:
-#             application/json:
-#               schema:
-#                 type: array
-#                 items:
-#                   $ref: "#components/schemas/Products"
-#         "500":
-#           description: No se pudo actualizar el producto
+paths:
+  /api/carts/{cartID}/product/{productID}:
+    put:
+      summary: Asigna un producto a un carrito especifico
+      tags:
+        - Carts
+      parameters:
+        - name: cartID
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+        - name: productID
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Los productos fueron asignados correctamente al carrito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error, no te trae productos
+
+  /api/carts/:code:
+    get:
+      summary: Trae carritos por código
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Te muestra el carrito con "x" código
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Error
+
+    delete:
+      summary: Elimina carritos por código
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: No se pudo eliminar el carrito
+
+  /api/carts:
+    get:
+      summary: Trae todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Te muestra los carritos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Error, no te trae los carritos
+    post:
+      summary: Crea carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Crea el carrito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Datos incompletos
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        idCarrito:
+          type: Number
+          description: ID del carrito
+        products:
+          type: array
+          description: Lista de productos
+      example:
+        idCarrito: 1
+        products: []

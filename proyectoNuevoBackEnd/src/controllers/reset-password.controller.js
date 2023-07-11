@@ -16,7 +16,6 @@ const forgotPasswordHandler = async (req, res) => {
         res.status(200).json("Password reset mail sent, please check your mail.")
 
     } catch (error) {
-        console.log(error.message)
         res.status(500).json(error.message)
     }
 }

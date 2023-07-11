@@ -10,7 +10,6 @@ export default class customError {
         });
         error.name = name,
             error.code = code;
-        console.log(error);
         return error;
     }
 }

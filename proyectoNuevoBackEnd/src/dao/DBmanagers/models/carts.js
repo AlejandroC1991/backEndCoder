@@ -5,16 +5,13 @@ import {
 
 const cartCollections = 'carts';
 
-
 const cartsSchema = new mongoose.Schema({
-
     idCarrito: {
         type: Number,
-        required: true
-
+        required: true,
+        unique: true,
     },
     products: [productsSchema],
-
 });
 
 export const cartModel = mongoose.model(cartCollections, cartsSchema);

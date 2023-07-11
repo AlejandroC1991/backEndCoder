@@ -7,18 +7,10 @@ import {
     productModel
 } from '../dao/DBmanagers/models/products.js';
 
-
-
-
 const productsManager = new Products();
 const cartsManager = new Carts();
 
 const router = Router();
-
-// router.get('/products', async(req, res) => {
-//     const products = await productsManager.getAll();
-//     res.render('products', { products });
-// });
 
 
 router.get('/carts', async (req, res) => {

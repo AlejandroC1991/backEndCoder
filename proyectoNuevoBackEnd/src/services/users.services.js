@@ -1,4 +1,4 @@
-import UsersRepository from "../../repositories/users.repository.js";
+import UsersRepository from "../repositories/users.repository.js";
 import {
     IncorrectLoginCredentials,
     UserNotFound
@@ -23,7 +23,6 @@ const usersRepository = new UsersRepository(users);
 
 export const getByEmailLogin = async (email) => {
     const user = await usersRepository.getByEmail(email);
-    console.log(user + "aca esta el usuario")
     if (!user) {
         throw new UserNotFound('El usuario no existe');
     }

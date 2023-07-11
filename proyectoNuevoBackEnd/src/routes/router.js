@@ -26,7 +26,6 @@ export default class Router {
     }
 
     post(path, policies, passportStrategy, ...callbacks) {
-        console.log(path, policies, passportStrategy, callbacks)
         this.router.post(
             path,
             this.applyCustomPassportCall(passportStrategy),
@@ -66,7 +65,6 @@ export default class Router {
                         error: info.messages ? info.messages : info.toString()
                     })
                 }
-                console.log(user);
                 req.user = user;
                 next();
             })(req, res, next);
@@ -124,7 +122,6 @@ export default class Router {
             try {
                 await callback.apply(this, params);
             } catch (error) {
-                console.log(error);
                 params[1].status(500).json({
                     error: error.message
                 });

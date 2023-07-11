@@ -1,8 +1,5 @@
 import * as productsService from '../services/products.services.js';
-import {
-    IncorrectLoginCredentials,
-    UserNotFound
-} from '../../utils/customExceptions.js';
+
 
 const getAll = async (req, res) => {
     try {
@@ -39,7 +36,6 @@ const getProductByCode = async (req, res) => {
         res.status(500).send({
             message: ("hay un error")
         });
-        console.log(error)
     }
 }
 
@@ -101,6 +97,7 @@ const updateByCode = async (req, res) => {
         });
     }
 }
+
 export {
     save,
     getAll,

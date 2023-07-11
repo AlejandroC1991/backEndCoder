@@ -5,8 +5,8 @@ export default class CartsRepository {
 
 
     save = async (cart) => {
-        await this.dao.save(cart);
-        return cart;
+        const carts = await this.dao.save(cart);
+        return carts;
     }
 
     getAll = async () => {
@@ -28,8 +28,8 @@ export default class CartsRepository {
 
     }
 
-    update = async (id, cart) => {
-        const result = await this.dao.update({
+    updateCarts = async (id, cart) => {
+        const result = await this.dao.updateCarts({
             _id: id
         }, cart);
         return result;

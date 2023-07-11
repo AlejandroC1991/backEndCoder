@@ -1,8 +1,8 @@
 import Router from './router.js';
 import Carts from '../dao/DBmanagers/cartsManager.js';
 import {
-    save,
     getAll,
+    save,
     getCartByID,
     deleteCart,
     updateCart
@@ -14,10 +14,10 @@ const cartsManager = new Carts();
 export default class CartsRouter extends Router {
     init() {
         this.get('/', ["PUBLIC"], null, getAll)
-        this.get('/:code', ["PUBLIC"], null, getCartByID)
+        this.get('/:idCarrito', ["PUBLIC"], null, getCartByID)
         this.post('/', ["PUBLIC"], null, save)
-        this.put('/:cartID/product/productID', ["PUBLIC"], null, updateCart)
-        this.delete('/:code', ["PUBLIC"], null, deleteCart)
+        this.put('/:idCarrito/products/:code', ["PUBLIC"], null, updateCart)
+        this.delete('/:idCarrito', ["PUBLIC"], null, deleteCart)
 
     };
 };

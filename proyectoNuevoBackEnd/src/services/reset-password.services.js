@@ -1,8 +1,7 @@
 import {
     hash
 } from 'bcrypt';
-
-import UsersRepository from '../../repositories/users.repository.js';
+import UsersRepository from '../repositories/users.repository.js';
 import {
     sendMail
 } from './mail.service.js';
@@ -12,17 +11,10 @@ import {
 import {
     resolve
 } from "path";
-// import {
-//     compile
-// } from "handlebars";
-import ResetPassword from '../models/reset-password.models.js';
+import ResetPassword from '../dao/DBmanagers/models/reset-password.js';
 
 
 const usersRepository = new UsersRepository();
-// usersRepository.getByEmail();
-// usersRepository.saveUser();
-
-
 
 export const ForgotPassword = async (email) => {
 
@@ -30,7 +22,6 @@ export const ForgotPassword = async (email) => {
     if (userExist.length > 0) {
         let user = userExist[0];
         const userEmail = user.email;
-        console.log(user)
         try {
 
             // creating data for sending mail
@@ -41,8 +32,6 @@ export const ForgotPassword = async (email) => {
                 "body": ``,
                 "toEmail": [user.email]
             }
-            console.log(data)
-
             //initializing ResetPassword() model for storing user_id and token in the database.
             let resetPassword = new ResetPassword();
 
@@ -60,7 +49,6 @@ export const ForgotPassword = async (email) => {
 
             // creating redirect url for navigating user to fill new password
             let actionUrl = `http://${process.env.FRONTEND_URL}/reset/${token}`;
-            console.log(actionUrl)
 
             // reading template file for sending in mail
             const templateStr = readFileSync(resolve(__dirname, '../views/mails/resetPassword.hbs')).toString('utf8')
@@ -79,10 +67,8 @@ export const ForgotPassword = async (email) => {
 
             // sending mail using nodemailer library
             let resultMail = await sendMail(data);
-            console.log(resultMail)
 
         } catch (error) {
-            console.log(error);
             throw new Error("Something wrong in sending mail");
         }
 

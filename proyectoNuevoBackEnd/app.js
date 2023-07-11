@@ -1,7 +1,7 @@
 import express from 'express';
 import initializePassport from './src/config/passport.config.js';
 import passport from 'passport';
-import CartsRouter from './src/routes/products.router.js';
+import CartsRouter from './src/routes/carts.router.js';
 import ProductsRouter from './src/routes/products.router.js';
 import UsersRouter from './src/routes/users.router.js';
 import sessionsRouter from './src/routes/sessions.router.js';
@@ -12,12 +12,12 @@ import {
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose from "mongoose";
-// import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
-import twilio from 'twilio';
 import compression from 'express-compression';
 import ResetPasswordRouter from './src/routes/reset-password.router.js';
-import swaggerJSDoc from 'swagger-jsdoc';
+import {
+    spects
+} from './src/docs/config.js';
 import swaggerUiExpress from 'swagger-ui-express';
 import __mainDirname from './utils/index.js';
 
@@ -33,8 +33,6 @@ initializePassport();
 app.use(addLogger);
 app.use(express.static(`${__dirname}/public`));
 app.set('views', `${__dirname}/views`);
-// app.engine('handlebars', handlebars());
-// app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
 app.use(express.json());
@@ -57,22 +55,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-const swaggerOptiones = {
-    definition: {
-        openapi: '3.0.1',
-        info: {
-            title: 'Documentacion de mi ecommerce',
-            description: 'API pensada para realizar una compra de un producto en un ecommerce'
-        }
-    },
-    apis: [`${__mainDirname}/src/docs/**/*.yaml`]
-}
-
-const spects = swaggerJSDoc(swaggerOptiones)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(spects));
-
 app.use('/api/users', usersRouter.getRouter());
 app.use('/api/products', productsRouter.getRouter());
 app.use('/api/carts', cartsRouter.getRouter());
@@ -88,60 +71,6 @@ app.use('/api/reset-password', ResetPasswordRouter);
         console.error('MongoDB connection error:', error);
     }
 })();
-
-
-
-//SMS TWILIO
-
-const TWILIO_ACCOUNT_SID = 'AC0477a618bec597d3c27cbc5ff1e181a9';
-const TWILIO_AUTH_TOKEN = '7f02dee778f1c33237cdee7fad496825';
-const TWILIO_PHONE_NUMBER = '+13204338456';
-
-const client = twilio(
-    TWILIO_ACCOUNT_SID,
-    TWILIO_AUTH_TOKEN,
-    TWILIO_PHONE_NUMBER
-);
-
-app.get('/sms', async (req, res) => {
-    await client.messages.create({
-        from: TWILIO_PHONE_NUMBER,
-        to: '+541122563087',
-        body: "MENSAJE DE PRUEBA"
-    });
-
-    res.send('SMS sent');
-});
-
-app.get('/custom-sms', async (req, res) => {
-    const {
-        name,
-        product
-    } = req.query;
-    await client.messages.create({
-        from: TWILIO_PHONE_NUMBER,
-        to: '+541122563087',
-        body: `Hola ${name} gracias por tu compra. Tu producto es ${product}`
-    });
-
-    res.send('SMS sent');
-});
-
-app.get('/whatsapp', async (req, res) => {
-    let {
-        name,
-        product
-    } = req.query;
-    await client.messages.create({
-        from: 'whatsapp:+14155238886',
-        to: 'whatsapp:+5491122563087',
-        body: `Hola ${name} gracias por tu compra. Tu producto es ${product}`
-
-    });
-    console.log("el mensaje se envio");
-
-    res.send('Whatsapp sent');
-})
 
 //COMPRESSION
 app.use(compression({

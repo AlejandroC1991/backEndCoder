@@ -1,4 +1,4 @@
-import UserDao from '../src/dao/DBmanagers/usersManager.js';
+import UserDao from '../dao/DBmanagers/usersManager.js';
 export default class UsersRepository {
     constructor(dao) {
         this.dao = dao;

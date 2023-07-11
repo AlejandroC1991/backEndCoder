@@ -8,7 +8,6 @@ import {
 import {
     hashData,
     compareHashedData,
-    generateToken,
 } from '../../utils/utils.js'
 import passport from 'passport';
 
@@ -47,7 +46,6 @@ router.post('/register', async (req, res) => {
             message: 'user registered'
         });
     } catch (error) {
-        console.log(error);
         res.status(500).send({
             status: 'error',
             error

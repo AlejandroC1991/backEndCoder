@@ -7,6 +7,5 @@ const router = Router();
 
 
 router.post('/reset-password', ResetPasswordController.default);
-console.log("llega al router")
 
 export default router;

@@ -1,7 +1,7 @@
 import {
     Carts
 } from "../dao/factory.js";
-import CartsRepository from "../../repositories/carts.repository.js";
+import CartsRepository from "../repositories/carts.repository.js";
 
 const carts = new Carts();
 const cartsRepository = new CartsRepository(carts);
@@ -20,9 +20,12 @@ const getAll = async () => {
 
 const deleteCart = async (IDPasado) => {
     try {
-        const deleteCart = await cartsRepository.deleteCart({
-            idCarrito: IDPasado
-        });
+        const deleteCart = await cartsRepository.deleteCart(IDPasado);
+        if (deleteCart.deletedCount == 0) {
+            return {
+                message: "Ese ID de carrito NO existe en la base de datos"
+            }
+        }
         return deleteCart;
 
     } catch (error) {
@@ -39,9 +42,7 @@ const update = async (id, cart) => {
 }
 
 const getCartByID = async (IDPasado) => {
-    const cartByID = await cartsRepository.getCartByID({
-        idCarrito: IDPasado
-    });
+    const cartByID = await cartsRepository.getCartByID(IDPasado);
     return cartByID;
 
 }

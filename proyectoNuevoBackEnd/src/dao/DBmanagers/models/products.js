@@ -47,7 +47,6 @@ export const productsSchema = new mongoose.Schema({
         }],
         default: [],
     },
-
 });
 
 

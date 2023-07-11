@@ -1,7 +1,7 @@
 import {
     Products
 } from "../dao/factory.js";
-import ProductsRepository from "../../repositories/products.repository.js";
+import ProductsRepository from "../repositories/products.repository.js";
 
 const products = new Products();
 const productsRepository = new ProductsRepository(products);

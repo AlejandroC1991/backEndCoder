@@ -1,21 +1,18 @@
 import {
-  
     getTicketsByID as getTicketsByIDTicketService,
-   
 } from '../services/tickets.services.js'
 
 
 const getTicketsByID = async (req, res) => {
     try {
         const id = Number(req.params.id);
-        
+
         const getTicketsByID = await getTicketsByIDTicketService(id);
-        console.log(getTicketsByID)
         if (!getTicketsByID) return res.send({
             message: "NO EXISTE ESE TICKET"
         });
         res.json({
-            
+
             status: 'success',
             payload: getTicketsByID
         });

@@ -20,7 +20,7 @@ import {
 } from './src/docs/config.js';
 import swaggerUiExpress from 'swagger-ui-express';
 import __mainDirname from './utils/index.js';
-
+import dotenv from 'dotenv'
 
 
 
@@ -29,10 +29,10 @@ const cartsRouter = new CartsRouter();
 const usersRouter = new UsersRouter();
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT
 
 initializePassport();
-
+dotenv.config()
 app.use(addLogger);
 app.use(express.static(`${__dirname}/public`));
 app.set('views', `${__dirname}/views`);
@@ -47,16 +47,25 @@ app.use(express.urlencoded({
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGO_URL,
         mongoOptions: {
             useNewUrlParser: true
         },
         ttl: 3600
     }),
-    secret: 'secretCode',
+    secret: process.env.SECRET_KEY,
     resave: true,
     saveUninitialized: true
 }));
+
+(async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URL);
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('MongoDB connection error:', error);
+    }
+})();
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,14 +77,6 @@ app.use('/api/sessions', sessionsRouter);
 app.use('/api/reset-password', ResetPasswordRouter);
 
 
-(async () => {
-    try {
-        await mongoose.connect('mongodb+srv://alejandroceliberto:ZZswdPg7FUBHqLQ7@codercluster.mlsehvd.mongodb.net/?retryWrites=true&w=majority');
-        console.log('Connected to MongoDB');
-    } catch (error) {
-        console.error('MongoDB connection error:', error);
-    }
-})();
 
 //COMPRESSION
 app.use(compression({

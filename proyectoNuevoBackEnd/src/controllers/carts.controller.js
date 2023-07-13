@@ -10,11 +10,9 @@ const getAll = async (req, res) => {
             payload: carts
         });
     } catch (error) {
-        console.log(error + "aca esta el error");
         res.status(500).send({
             error
         });
-
     }
 };
 
@@ -43,7 +41,6 @@ const save = async (req, res) => {
         res.status(500).send({
             error
         });
-        console.log(error + "aca esta el error")
     }
 }
 
@@ -70,7 +67,6 @@ const deleteCart = async (req, res) => {
     try {
         const cartID = Number(req.params.idCarrito);
         const cartBorrado = await cartsService.deleteCart(cartID);
-
         res.send({
             status: 'success',
             payload: cartBorrado
@@ -85,24 +81,27 @@ const deleteCart = async (req, res) => {
 
 }
 const addProductToCart = async (req, res) => {
-    const idCarrito = Number(req.params.idCarrito);
-    const code = Number(req.params.code);
-    const cart = await cartsService.getCartByID(idCarrito);
+    try {
+        const idCarrito = Number(req.params.idCarrito);
+        const code = Number(req.params.code);
+        const cart = await cartsService.getCartByID(idCarrito);
 
-    console.log(idCarrito)
-    console.log(cart)
-    if (!cart) {
-        return res.sendNotFoundError('El carrito con ese ID no existe en la base de datos');
-    }
-    const productBD = await productsService.getProductByCode(code);
-    if (!productBD) {
-        return res.sendNotFoundError('El product con ese code no existe en la base de datos');
-    }
+        if (!cart) {
+            return res.sendNotFoundError('El carrito con ese ID no existe en la base de datos');
+        }
+        const productBD = await productsService.getProductByCode(code);
+        if (!productBD) {
+            return res.sendNotFoundError('El product con ese code no existe en la base de datos');
+        }
 
-    cart.products.push(productBD);
-    await cartsService.update(idCarrito, cart);
-    res.send(cart);
-
+        cart.products.push(productBD);
+        await cartsService.update(idCarrito, cart);
+        res.send(cart);
+    } catch (error) {
+        res.status(500).send({
+            error
+        });
+    };
 }
 
 const deletedProductInCart = async (req, res) => {
@@ -123,7 +122,6 @@ const deletedProductInCart = async (req, res) => {
         }
         cart.products.splice(cart.products.indexOf(product), 1);
         await cartsService.update(idCarrito, cart);
-
 
         res.sendSuccess(cart);
 

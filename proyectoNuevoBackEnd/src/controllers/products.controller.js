@@ -3,7 +3,6 @@ import * as productsService from '../services/products.services.js';
 
 const getAll = async (req, res) => {
     try {
-
         const products = await productsService.getAll();
         res.send(products);
     } catch (error) {

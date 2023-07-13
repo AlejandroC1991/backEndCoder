@@ -42,7 +42,7 @@ const deleteProduct = async (codeABorrar) => {
 
 const updateByCode = async (codigoPasado, product) => {
     try {
-
+        console.log(codigoPasado, product)
         const result = await productsRepository.updateByCode(codigoPasado, product);
         if (result.modifiedCount == 0) {
             return {

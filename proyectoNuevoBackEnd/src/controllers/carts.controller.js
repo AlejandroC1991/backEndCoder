@@ -1,9 +1,9 @@
 import * as cartsService from '../services/carts.services.js';
+import * as productsService from '../services/products.services.js';
 
 
 const getAll = async (req, res) => {
     try {
-
         const carts = await cartsService.getAll();
         res.send({
             status: 'success',
@@ -44,14 +44,12 @@ const save = async (req, res) => {
             error
         });
         console.log(error + "aca esta el error")
-
     }
 }
 
 const getCartByID = async (req, res) => {
     try {
         const idCarrito = Number(req.params.idCarrito);
-        console.log(req.params.idCarrito + "aca esta el id del carrito")
         const cartByID = await cartsService.getCartByID(idCarrito);
         if (!cartByID) return res.send({
             message: "NO EXISTE EL CARRITO"
@@ -86,46 +84,61 @@ const deleteCart = async (req, res) => {
 
 
 }
+const addProductToCart = async (req, res) => {
+    const idCarrito = Number(req.params.idCarrito);
+    const code = Number(req.params.code);
+    const cart = await cartsService.getCartByID(idCarrito);
 
-const updateCart = async (req, res) => {
-    const {
-        idCarrito,
-        products,
-    } = req.body;
-    if (!idCarrito || !products) return res.status(400).send({
-        status: 'error',
-        error: 'Te falta el idCarrito o los productos'
-    });
-
-
-    try {
-        const {
-            idCarrito,
-            products
-        } = req.params;
-        console.log(req.params + "aca estan los params")
-
-        const product = await productsManager.getProductByCode(products);
-        console.log(product + "que tenemos aca?")
-        if (!product) return res.sendNotFoundError('producto no encontrado');
-
-        const cart = await cartsManager.getCartByID(idCarrito);
-
-        if (!cart) return res.sendNotFoundError('carrito no encontrado');
-
-        product.carts.push({
-            cart: idCarrito
-        });
-
-        const result = await productsManager.updateByCode(products, product);
-
-        res.sendSuccess(result);
-    } catch (error) {
-
+    console.log(idCarrito)
+    console.log(cart)
+    if (!cart) {
+        return res.sendNotFoundError('El carrito con ese ID no existe en la base de datos');
+    }
+    const productBD = await productsService.getProductByCode(code);
+    if (!productBD) {
+        return res.sendNotFoundError('El product con ese code no existe en la base de datos');
     }
 
+    cart.products.push(productBD);
+    await cartsService.update(idCarrito, cart);
+    res.send(cart);
 
 }
+
+const deletedProductInCart = async (req, res) => {
+    try {
+        const idCarrito = Number(req.params.idCarrito);
+        const code = Number(req.params.code);
+
+        const cart = await cartsService.getCartByID(idCarrito);
+
+        if (!cart) {
+            return res.sendNotFoundError('El carrito con ese ID no existe en la base de datos');
+        }
+
+        const product = cart.products.find(product => product.code === code);
+
+        if (!product) {
+            return res.sendNotFoundError('El producto con ese CODE no existe en el carrito');
+        }
+        cart.products.splice(cart.products.indexOf(product), 1);
+        await cartsService.update(idCarrito, cart);
+
+
+        res.sendSuccess(cart);
+
+        res.json({
+            status: 'success',
+            message: 'El carrito con ese ID existe',
+            payload: cart
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'error'
+        });
+    }
+};
 
 
 export {
@@ -133,5 +146,6 @@ export {
     getAll,
     getCartByID,
     deleteCart,
-    updateCart,
+    deletedProductInCart,
+    addProductToCart,
 }

@@ -15,7 +15,7 @@ export default class Carts {
     }
     update = async (id, cart) => {
         return await cartModel.updateOne({
-            _id: id
+            idCarrito: id
         }, cart);
     }
     getCartByID = async (IDPasado) => {
@@ -31,5 +31,10 @@ export default class Carts {
         } catch (error) {
             console.log(error + 'error en la ruta');
         }
+    }
+    addProductToCart = async (id, cart) => {
+        return await cartModel.updateOne({
+            idCarrito: id
+        }, cart);
     }
 }

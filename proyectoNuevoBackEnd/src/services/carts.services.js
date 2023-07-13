@@ -34,12 +34,13 @@ const deleteCart = async (IDPasado) => {
 
 }
 
+
 const update = async (id, cart) => {
-    const result = await cartsRepository.update({
-        _id: id
-    }, cart);
+    const result = await cartsRepository.update(
+        id, cart);
     return result;
 }
+
 
 const getCartByID = async (IDPasado) => {
     const cartByID = await cartsRepository.getCartByID(IDPasado);
@@ -47,10 +48,16 @@ const getCartByID = async (IDPasado) => {
 
 }
 
+const addProductToCart = async (cart) => {
+    await cartsRepository.addProductToCart(cart);
+    return cart;
+}
+
 export {
     save,
     getAll,
     deleteCart,
     update,
-    getCartByID
+    getCartByID,
+    addProductToCart
 }

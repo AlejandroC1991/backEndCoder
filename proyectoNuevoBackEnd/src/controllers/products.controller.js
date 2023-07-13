@@ -53,13 +53,10 @@ const deleteProduct = async (req, res) => {
             message: 'Producto no encontrado'
         });
     }
-
-
 }
 
 
 const updateByCode = async (req, res) => {
-
     const {
         title,
         description,

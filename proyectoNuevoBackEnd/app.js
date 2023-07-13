@@ -21,6 +21,9 @@ import {
 import swaggerUiExpress from 'swagger-ui-express';
 import __mainDirname from './utils/index.js';
 
+
+
+
 const productsRouter = new ProductsRouter();
 const cartsRouter = new CartsRouter();
 const usersRouter = new UsersRouter();
@@ -39,6 +42,8 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+
+
 
 app.use(session({
     store: MongoStore.create({

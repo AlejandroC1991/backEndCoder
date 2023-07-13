@@ -28,10 +28,9 @@ export default class CartsRepository {
 
     }
 
-    updateCarts = async (id, cart) => {
-        const result = await this.dao.updateCarts({
-            _id: id
-        }, cart);
+    update = async (id, cart) => {
+        const result = await this.dao.update(
+            id, cart);
         return result;
     }
 
@@ -41,5 +40,9 @@ export default class CartsRepository {
         });
         return cartByID;
 
+    }
+    addProductToCart = async (cart) => {
+        const carts = await this.dao.addProductToCart(cart);
+        return carts;
     }
 }
